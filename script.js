@@ -130,13 +130,7 @@
       .to-whatsapp{ left:16px; }
     }
 
-    @media(prefers-color-scheme:dark){
-      .to-top, .to-whatsapp{
-        background:#ededf0; color:#0f1012; box-shadow:0 10px 24px rgba(0,0,0,.45);
-      }
-      .to-top:hover, .to-whatsapp:hover{ background:#d8d9e0 }
-      .to-whatsapp img{ filter:none; }
-    }
+
   `;
   document.head.appendChild(style);
 
