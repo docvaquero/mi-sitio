@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clase — Autogestión de la Salud</title>
+  <meta name="description" content="Preview gratuito de la clase Autogestión de la Salud y acceso a la versión completa.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="clase.css" />
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:,">
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html#inicio">DOC&nbsp;VAQUERO</a>
+      <nav class="links" aria-label="principal">
+        <a href="index.html#sobre">SOBRE MÍ</a>
+        <a href="mitrabajo.html">MI TRABAJO</a>
+        <a href="microdosis.html">MICRODOSIS</a>
+        <a href="index.html#recursos">RECURSOS</a>
+        <a class="btn btn-solid" href="index.html#agenda">AGENDAR</a>
+      </nav>
+      <button class="menu" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero hero-photo">
+    <div class="wrap hero-inner">
+      <div class="text">
+        <h1>Clase: Autogestión de la Salud</h1>
+        <p class="lead">Una clase grabada con herramientas claras para comprender la salud desde otra mirada: con respeto, coherencia y autonomía.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#preview">Ver preview</a>
+          <a class="btn btn-ghost" href="#comprar">Comprar la clase</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-bg" style="--img: image-set(url('portada-clase.webp') type('image/webp'), url('Portada workshop.jpg') type('image/jpeg')); --pos: 50% 50%;"></div>
+    <div class="hero-veil"></div>
+  </section>
+
+  <main>
+    <!-- Preview -->
+    <section id="preview" class="section reveal">
+      <div class="wrap">
+        <p class="eyebrow">Preview gratuito</p>
+        <h2>Mirá un adelanto</h2>
+        <p class="lead">Este fragmento te muestra el enfoque y las herramientas que vas a encontrar en la clase completa.</p>
+
+        <div class="video">
+          <div class="ratio">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/9pX0FBZZzRg"
+              title="Preview — Autogestión de la Salud"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comprar -->
+    <section id="comprar" class="section alt reveal">
+      <div class="wrap">
+        <p class="eyebrow">Clase completa</p>
+        <h2>Accedé ahora</h2>
+
+        <!-- aquí va la grilla ajustada -->
+        <div class="grid-2 buy-grid">
+          <div>
+            <p class="price"><strong>Valor:</strong> 20.000 ARS (Argentina) · 20 USD (exterior)</p>
+            <ul class="ticks">
+              <li>Acceso on-demand</li>
+              <li>Enfoque biológico, claro y aplicable</li>
+              <li>Guía práctica complementaria</li>
+            </ul>
+
+            <div class="actions" style="margin-top:12px">
+              <a class="btn btn-primary" href="https://wa.link/gbyy70" target="_blank" rel="noopener">Comprar la clase</a>
+              <a class="btn btn-light" href="index.html#inicio">Volver al inicio</a>
+            </div>
+          </div>
+
+          <aside class="card buy-card">
+            <h3>Qué te llevás</h3>
+            <p>Un mapa simple para leer el sentido del síntoma y herramientas para volver a tu propio criterio, sin fórmulas mágicas.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap tiny">
+      <nav aria-label="secundario">
+        <a href="#preview">PREVIEW</a> · <a href="#comprar">COMPRAR</a>
+      </nav>
+      <p>© <span id="y"></span> Doc Vaquero</p>
+    </div>
+  </footer>
+
+  <script src="clase.js"></script>
+</body>
+</html>
