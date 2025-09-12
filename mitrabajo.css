@@ -1,0 +1,188 @@
+/* ========= 0) VARIABLES / BASE ========= */
+:root{
+  --bg:#ffffff; --ink:#111111; --muted:#6f7076; --sand:#f4efe9; --line:#e8e3dd;
+  --terra1:#f3e7dd; --terra2:#ecdacd; --radius:12px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f1012; --ink:#ededf0; --muted:#a8adba; --sand:#191715; --line:#26221e; --terra1:#2a221d; --terra2:#251f1b }
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  line-height:1.7; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+img{max-width:100%; height:auto; display:block}
+:focus-visible{outline:2px solid #000; outline-offset:2px}
+
+/* ========= 1) UTILIDADES ========= */
+.wrap{max-width:1120px; margin:0 auto; padding:24px}
+.grid-2{display:grid; gap:32px}
+@media (min-width:960px){ .grid-2{grid-template-columns:1.25fr .75fr} }
+.stack{display:flex; flex-direction:column; gap:16px; align-items:center; text-align:center}
+.tiny{display:flex; flex-direction:column; gap:8px; align-items:center}
+.centered{display:flex; gap:12px; flex-wrap:wrap; justify-content:center}
+.lead{color:var(--muted); max-width:64ch}
+.lead-body{color:var(--ink)}
+.eyebrow{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin:0 0 6px}
+
+/* ========= 2) TITULARES / BOTONES ========= */
+h1,h2,h3{margin:0 0 12px; line-height:1.14; font-weight:800; color:var(--ink)}
+h1{font-size:clamp(36px,6vw,58px)}
+h2{font-size:clamp(26px,4.2vw,38px)}
+h3{font-size:clamp(18px,2.6vw,22px)}
+
+/* Botones compactos y centrados (ancho según texto) */
+.btn{
+  display:inline-block; width:auto; max-width:100%; white-space:nowrap;
+  padding:10px 18px; border-radius:999px;
+  text-decoration:none; font-weight:800; letter-spacing:.04em;
+  color:#111; background:transparent; border:1px solid var(--ink);
+  transition:transform .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+}
+.btn:hover{ background:#111; color:#fff; transform:translateY(-3px); box-shadow:0 8px 18px rgba(0,0,0,.12) }
+.btn-ghost{border-color:var(--ink)}
+.btn-solid{ background:transparent; color:var(--ink); border:1px solid var(--ink) }
+.btn-solid:hover{ background:#111; color:#fff; border-color:#111 }
+.btn-primary{background:#111; color:#fff; border-color:#111}
+.btn-light{background:transparent; border:1px solid var(--line); color:var(--ink)}
+.btn-light:hover{background:#111; color:#fff; border-color:#111}
+
+/* ========= 3) NAV ========= */
+.nav{position:sticky; top:0; z-index:30; background:rgba(255,255,255,.9); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+@media (prefers-color-scheme: dark){ .nav{background:rgba(15,16,18,.85)} }
+.nav .wrap{display:flex; justify-content:space-between; align-items:center}
+.brand{ text-decoration:none; color:var(--ink); letter-spacing:.18em; font-weight:900; font-size:20px }
+.links{display:none; gap:22px; align-items:center}
+.links a{ color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.15em; font-size:12px }
+.links a:hover{text-decoration:underline}
+.menu{background:none; border:0; font-size:22px; color:var(--ink)}
+@media (min-width:900px){ .links{display:flex} .menu{display:none} }
+.links.open{display:flex; flex-direction:column; gap:12px; margin-top:8px}
+
+/* ========= 4) SECCIONES / CARDS ========= */
+.section{padding:72px 0}
+.alt{background:var(--sand)}
+
+.highlight,
+.callout{
+  background:var(--sand);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  will-change:transform, box-shadow;
+}
+@media (prefers-color-scheme: dark){
+  .highlight,.callout{ background:#121316; border-color:#20232a }
+}
+
+.ticks{list-style:none; padding:0; margin:0}
+.ticks li{padding-left:20px; position:relative; margin:8px 0}
+.ticks li::before{content:"•"; position:absolute; left:4px; top:0; font-weight:900}
+
+/* levante sutil */
+.lift:hover{ transform:translateY(-3px); box-shadow:0 8px 18px rgba(0,0,0,.10) }
+
+/* ========= 5) HERO con parallax ========= */
+.hero{position:relative; overflow:hidden}
+.hero-photo{min-height:58vh; display:grid; place-items:center}
+.hero-inner{position:relative; z-index:2}
+.hero .text{max-width:720px; color:#fff}
+.hero .text .lead, .hero .text h1, .hero .text strong{ color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.5) }
+.hero .actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px}
+.hero-bg{ position:absolute; inset:-10% -10% -10% -10%; background:
+  radial-gradient(900px 500px at 12% 20%, var(--terra1) 0%, transparent 60%),
+  radial-gradient(900px 520px at 88% 10%, var(--terra2) 0%, transparent 65%),
+  var(--bg) }
+.hero-bg::after{ content:""; position:absolute; inset:0; background-image:var(--img); background-size:cover; background-position:var(--pos, 50% 60%); transform: translate(var(--tx,0), var(--ty,0)) scale(1.06); transition: transform .2s ease-out; will-change:transform; opacity:.92 }
+.hero-veil{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.48), rgba(0,0,0,.28) 40%, rgba(0,0,0,.08) 70%); mix-blend-mode:multiply; z-index:1 }
+
+/* ========= 6) SECCIÓN #cuerpo (fondo + velo) ========= */
+#cuerpo.section{ position:relative; overflow:hidden }
+#cuerpo.section::before{
+  content:""; position:absolute; inset:0; z-index:0;
+  background-image:image-set(url('arañita.webp') type('image/webp'), url('arañita.JPG') type('image/jpeg'));
+  background-size:cover; background-position:50% 55%;
+  transform:translate(var(--tx,0), var(--ty,0)) scale(1.02);
+  transition:transform .2s ease-out; will-change:transform;
+}
+#cuerpo.section::after{
+  content:""; position:absolute; inset:0; z-index:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.35) 40%, rgba(0,0,0,.20) 100%);
+}
+#cuerpo .wrap{ position:relative; z-index:1 }
+#cuerpo h2,#cuerpo p,#cuerpo .eyebrow,#cuerpo strong{ color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.25) }
+#cuerpo .callout{ background:rgba(0,0,0,.42); border-color:rgba(255,255,255,.18); color:#fff }
+#cuerpo .callout h3 { color:#fff !important; }
+
+/* ========= 7) HERRAMIENTAS (3 cards iguales y botones alineados) ========= */
+#herramientas h2{ margin-bottom:12px; }
+#herramientas .tools-grid{ margin-top:22px; }
+
+.cards-3.tools-grid{
+  display:grid; gap:18px;
+  grid-template-columns:1fr;            /* mobile */
+  align-items:stretch;                  /* cada ítem llena el alto del track */
+}
+@media (min-width:900px){
+  .cards-3.tools-grid{ grid-template-columns:repeat(3,1fr); }
+}
+
+.cards-3.tools-grid .card{
+  background:var(--sand);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px;
+  box-shadow:0 10px 24px rgba(0,0,0,.03);
+  display:flex;
+  flex-direction:column;                /* apila título, texto, botón */
+  /* IMPORTANTE: quitamos justify-content: space-between; */
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.cards-3.tools-grid .card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 26px rgba(0,0,0,.08);
+}
+@media (prefers-color-scheme: dark){
+  .cards-3.tools-grid .card{
+    background:#121316;
+    border-color:#20232a;
+    box-shadow:none;
+  }
+}
+
+/* Botones: centrados y al fondo sin alterar el interlineado del texto */
+.cards-3.tools-grid .card a.btn{
+  align-self:center;    /* centrado horizontal */
+  margin-top:auto;      /* empuja el botón al fondo del card */
+  padding-top:12px;     /* aire mínimo sobre el botón */
+}
+
+/* ========= 8) FOOTER ========= */
+.footer{
+  border-top:1px solid var(--line);
+  background:#fff;
+  color:#4b4f55;
+}
+@media (prefers-color-scheme: dark){
+  .footer{ background:#0f1012; color:#9aa1ac }
+}
+
+/* Centrado real del contenido existente: <div class="wrap tiny"> */
+.footer .wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;   /* centra horizontalmente los hijos */
+  gap:14px;
+  padding:24px;
+  text-align:center;    /* centra el texto dentro de nav y p */
+}
+
+/* Enlaces del footer */
+.footer nav a{ color:inherit; text-decoration:none }
+.footer nav a:hover{ color:#111 }
+.footer p{ margin:6px 0 0; }
+

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contacto — Doc Vaquero</title>
+  <meta name="description" content="Escribime para consultas, agenda y propuestas.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css" />
+  <link rel="stylesheet" href="contacto.css" />
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html#inicio">DOC&nbsp;VAQUERO</a>
+      <nav class="links" aria-label="principal">
+        <a href="contacto.html" aria-current="page">CONTACTO</a>
+        <a href="index.html#sobre">SOBRE MÍ</a>
+        <a href="index.html#servicios">SERVICIOS</a>
+        <a href="index.html#testimonios">TESTIMONIOS</a>
+        <a href="index.html#recursos">RECURSOS</a>
+        <a class="btn btn-solid" href="https://calendly.com/doc-federicovaquero/50min" target="_blank" >AGENDAR</a>
+      </nav>
+      <button class="menu" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <!-- ===== CONTENIDO ===== -->
+  <main class="contacto section">
+    <div class="wrap contact-wrap">
+      <header class="contact-head">
+        <p class="eyebrow">Contacto</p>
+        <h1>Hablemos</h1>
+        <p class="lead">Escribime y te respondo a la brevedad. Si preferís, podés agendar directo desde el botón “Agendar 50’”.</p>
+      </header>
+
+      <section class="contact-content">
+        <!-- ===== Panel lateral con redes ===== -->
+        <aside class="contact-info">
+          <ul class="contact-list">
+            <li>
+              <a class="pill-icon" href="https://wa.link/sneb36" target="_blank" rel="noopener">
+                <img src="logo-blanco-whatsapp.png" alt="" aria-hidden="true">
+                <span>WhatsApp</span>
+              </a>
+            </li>
+            <li>
+              <a class="pill-icon" href="https://instagram.com/doc_vaquero" target="_blank" rel="noopener">
+                <img src="logo-blanco-instagram.png" alt="" aria-hidden="true">
+                <span>@doc_vaquero</span>
+              </a>
+            </li>
+            <li>
+              <a class="pill-icon" href="https://open.spotify.com/episode/3So534VsKwgzAvypVA95LX?si=v4bNahnDQuKLzI2IW3tv-w" target="_blank" rel="noopener">
+                <img src="logo-blanco-spotify.png" alt="" aria-hidden="true">
+                <span>Spotify</span>
+              </a>
+            </li>
+          </ul>
+
+          <a class="btn btn-primary wide" href="https://calendly.com/doc-federicovaquero/50min" target="_blank" >Agendar 50’</a> 
+        </aside>
+
+        <!-- ===== Formulario ===== -->
+        <section class="contact-form">
+          <form id="contactForm"
+                action="https://formspree.io/f/xgvlzqoe"
+                method="POST"
+                accept-charset="utf-8"
+                novalidate>
+            <input type="hidden" name="_subject" value="Nuevo mensaje — Contacto Web Doc Vaquero">
+            <input type="hidden" name="_format" value="plain">
+            <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off">
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required autocomplete="name" />
+              </div>
+
+              <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autocomplete="email" />
+              </div>
+
+              <div class="field">
+               <label for="telefono">Teléfono (opcional)</label>
+                <input type="tel" id="telefono" name="telefono" inputmode="tel" autocomplete="tel" placeholder="+54 9 11 1234 5678" />
+             </div>
+
+              <div class="field">
+                <label for="pais">País</label>
+                <input id="pais" name="pais" type="text" placeholder="Argentina" autocomplete="country-name" />
+              </div>
+
+              <div class="field full">
+                <label for="mensaje">Mensaje</label>
+                <textarea id="mensaje" name="mensaje" rows="6" placeholder="Contame brevemente en qué puedo ayudarte…" required></textarea>
+              </div>
+
+              <div class="field full check">
+                <label>
+                  <input type="checkbox" id="consent" name="consent" required>
+                  Acepto ser contactad@ por este medio. (Sin spam)
+                </label>
+             </div>
+            </div>
+
+            <button class="btn btn-solid" type="submit" id="sendBtn">Enviar</button>
+
+            <p id="formOk" class="status ok" hidden>¡Gracias! Tu mensaje fue enviado. Te voy a responder a la brevedad.</p>
+            <p id="formErr" class="status err" hidden>Ups, no se pudo enviar. Probá de nuevo o escribime por WhatsApp.</p>
+          </form>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="wrap tiny">
+      <nav aria-label="secundario">
+        <a href="index.html#sobre">SOBRE MÍ</a>  ·
+        <a href="index.html#servicios">SERVICIOS</a>  ·
+        <a href="index.html#recursos">RECURSOS</a>  ·
+        <a href="https://calendly.com/doc-federicovaquero/50min" target="_blank" >AGENDAR</a>
+      </nav>
+      <p>© <span id="y"></span> Doc Vaquero</p>
+    </div>
+  </footer>
+
+  <script src="contacto.js"></script>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const btn = document.querySelector('.menu');
+    const nav = document.querySelector('.links');
+    if (btn && nav){
+      btn.addEventListener('click', () => {
+        const open = nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open);
+      });
+    }
+  </script>
+</body>
+</html>
+
+
+
