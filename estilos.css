@@ -1,0 +1,358 @@
+/* ============== 0. VARIABLES ============== */
+:root{
+  --bg:#ffffff; --ink:#111111; --muted:#6f7076;
+  --sand:#f4efe9; --line:#e8e3dd; --terra1:#f3e7dd; --terra2:#ecdacd;
+  --radius:12px;
+}
+
+/* ============== 1. BASE ============== */
+*{box-sizing:border-box}
+html,body{height:100%}
+html{ background:#fff; }   /* blanco base */
+body{
+  margin:0; background:transparent; color:var(--ink);
+  font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  line-height:1.7; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  position:relative; z-index:0;
+}
+/* Textura de fondo global */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  z-index:-1;              /* detrás del contenido */
+  pointer-events:none;
+  background-image:url('fondo.jpg');  /* <-- tu archivo */
+  background-repeat:repeat;
+  background-position:center;
+  background-size:1000px;  /* AJUSTE: 800–1200px según gusto */
+  opacity:.06;             /* AJUSTE: .04 muy sutil, .10 más visible */
+}
+img{max-width:100%; height:auto; display:block}
+:focus-visible{outline:2px solid #000; outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden}
+
+/* Utilidades */
+.wrap{max-width:1120px; margin:0 auto; padding:24px}
+.grid-2{display:grid; gap:32px}
+.stack{display:flex; flex-direction:column; gap:16px; align-items:center; text-align:center}
+.tiny{display:flex; flex-direction:column; gap:8px; align-items:center}
+.lead{color:var(--muted); max-width:64ch}
+.italic{font-style:italic}
+
+/* Titulares + botones */
+h1,h2,h3{margin:0 0 12px; line-height:1.14; font-weight:800; color:var(--ink)}
+h1{font-size:clamp(38px,6vw,62px)}
+h2{font-size:clamp(26px,4.2vw,38px)}
+h3{font-size:clamp(18px,2.6vw,22px)}
+.sub{border-bottom:2px solid var(--ink); padding-bottom:2px}
+.btn{display:inline-block; padding:10px 18px; border-radius:999px; text-decoration:none; font-weight:800; letter-spacing:.04em; color:#111; background:transparent; border:1px solid var(--ink); transition:.18s}
+.btn:hover{background:#111; color:#fff}
+.btn-solid{background:transparent; color:var(--ink); border:1px solid var(--ink)}
+.btn-solid:hover{background:#111; color:#fff; border-color:#111}
+.btn-primary{background:#111; color:#fff; border-color:#111}
+.btn-light{background:transparent; border:1px solid var(--line); color:var(--ink)}
+.btn-light:hover{background:#111; color:#fff; border-color:#111}
+.btn-ghost2{ color:#fff; border:1px solid #fff; background:transparent; }
+.btn-ghost2:hover{ background:#fff; color:#000; border-color:#fff; }
+
+/* ============== 2. NAV ============== */
+.nav{position:sticky; top:0; z-index:30; background:rgba(255,255,255,.9); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex; justify-content:space-between; align-items:center}
+.brand{ text-decoration:none; color:var(--ink); letter-spacing:.18em; font-weight:900; font-size:20px }
+.links{display:none; gap:22px; align-items:center}
+.links a{ color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.15em; font-size:12px }
+.links a:hover{text-decoration:underline}
+.menu{background:none; border:0; font-size:22px; color:var(--ink)}
+@media (min-width:900px){ .links{display:flex} .menu{display:none} }
+
+/* ============== 3. HERO / 4. SECCIONES / 5. FULLBLEED ============== */
+.hero{position:relative; overflow:hidden}
+.hero-photo{min-height:76vh; display:grid; place-items:center}
+.hero-inner{position:relative; z-index:2}
+.hero .text{max-width:720px; color:#fff}
+.hero .text h1,.hero .text,.hero .text .lead,.hero .text strong{ color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.5) }
+.lead-hero{ line-height:1.85; max-width:58ch }
+.hero .badges{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0}
+.hero .badges span{ font-size:11px; padding:6px 10px; border:1px solid var(--line); border-radius:999px; color:#fff; background:rgba(0,0,0,.38); letter-spacing:.12em; font-weight:800; transition:.18s }
+.hero .badges span:hover{ transform: translateY(-2px); filter: brightness(1.08) }
+/* Alinear badges en una sola fila en móvil */
+@media (max-width: 600px){
+  .hero .badges{
+    flex-wrap: nowrap;       /* no se rompen a varias líneas */
+    justify-content: center; /* los centra horizontalmente */
+    gap: 6px;                /* un poco menos de espacio */
+  }
+  .hero .badges span{
+    font-size: 10px;         /* achicamos tipografía */
+    padding: 4px 8px;        /* menos padding para que entren */
+    white-space: nowrap;     /* que no hagan salto de línea */
+  }
+}
+.hero-bg{ position:absolute; inset:-10% -10% -10% -10%; background:
+  radial-gradient(1000px 520px at 8% 18%, var(--terra1) 0%, transparent 60%),
+  radial-gradient(1000px 560px at 92% 12%, var(--terra2) 0%, transparent 65%),
+  var(--bg) }
+.hero-bg::after{ content:""; position:absolute; inset:0; background-image:var(--img); background-size:cover; background-position:center; transform: translate(var(--tx,0), var(--ty,0)) scale(1.06); transition:.2s; z-index:0; opacity:.9 }
+.hero-veil{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.35) 40%, rgba(0,0,0,.08) 70%); mix-blend-mode:multiply; z-index:1 }
+/* Ajuste solo para móviles */
+@media (max-width: 600px){
+  .hero-bg::after{
+    background-position: 20% 50%;  /* ← mové el % de la izquierda/derecha */
+  }
+}
+
+.section{padding:72px 0}
+.alt{background:var(--sand)}
+
+/* ===== Cards genéricos */
+.cards-3{ display:grid; gap:18px; grid-template-columns:repeat(3,1fr); align-items:stretch }
+@media (min-width:900px){ .cards-3{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:900px){ .cards-3{grid-template-columns:1fr} }
+
+.cards-3 .card{
+  background:var(--sand);
+  border:0px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px;
+  box-shadow:0 10px 24px rgba(0,0,0,.03);
+  display:flex; flex-direction:column; height:100%;
+  transition:.22s;
+}
+.cards-3 .card:hover{ transform: translateY(-4px); box-shadow:0 14px 28px rgba(0,0,0,.06) }
+.cards-3 .card h3{font-weight:800}
+.cards-3 .card p{margin:8px 0 0}
+.cards-3 .card .btn{ margin-top:auto; align-self:center; width:auto; white-space:nowrap }
+
+/* FULLBLEED (con “ventana” por scroll) */
+.fullbleed{ position:relative; min-height:44vh; display:grid; place-items:center; overflow:hidden; --tx:0; --ty:0 }
+.fullbleed::before{ content:""; position:absolute; inset:-8%; background-image:var(--img); background-size:cover; background-position:50% var(--y,50%); transform: translate(var(--tx), var(--ty)) scale(1.00); transition: .25s ease-out }
+.fullbleed-veil{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,.14)) }
+.fullbleed-text{ position:relative; z-index:2; color:#fff; letter-spacing:.2em; font-weight:800; text-transform:uppercase }
+
+/* ============== 6. SOBRE MÍ ============== */
+#sobre.section{ background: transparent; border-top: 0px solid var(--line); border-bottom: 0px solid var(--line); position: relative; overflow:hidden }
+.about-v2{ display:grid; gap:34px; grid-template-columns: 1fr 1fr; align-items:start }
+#sobre .copy{ position:relative; padding-bottom:18px }
+#sobre .copy::after{ content:""; position:absolute; left:0; bottom:0; width:72px; height:2px; background: color-mix(in srgb, var(--ink) 80%, transparent); opacity:.35; border-radius:2px }
+#sobre .copy p{ margin:12px 0 0; line-height:1.85; max-width:68ch; color: color-mix(in srgb, var(--ink) 85%, var(--muted)) }
+.eyebrow{ font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin:0 0 6px }
+#sobre .photo-col{ display:flex; flex-direction:column; align-items:center; gap:14px }
+#sobre .portrait{ margin:0 }
+#sobre .portrait .portrait-frame{ position:relative; overflow:hidden; border-radius:12px; max-width:100% }
+#sobre .portrait .portrait-pan{ display:block; max-width:100%; height:auto; object-fit:contain; transform: translate(var(--tx,0), var(--ty,0)) scale(1.06); transition:.22s }
+.about-cta{ grid-column:1 / -1; justify-self:center; margin-top:6px }
+@media (max-width: 959px){ .about-v2{ grid-template-columns:1fr } }
+
+/* ============== 6. GALERÍA (carrusel por fundido) ============== */
+.carousel-fade{
+  --h: clamp(220px, 30vw, 420px);
+  position:relative;
+  height:var(--h);
+  border:0;
+  border-radius:0;
+  overflow:hidden;
+  background:#000;
+  width:100vw;
+  margin-left:50%;
+  transform:translateX(-50%);   /* centra el 100vw respecto de la página */
+
+}
+.carousel-fade .slide{ position:absolute; inset:0; opacity:0; transition:opacity .45s ease }
+.carousel-fade .slide.is-active{ opacity:1; }
+.carousel-fade img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block }
+.carousel-fade img.pos-top{ object-position:center 32% }
+.carousel-fade img.pos-center{ object-position:center 45% }
+.carousel-fade img.pos-headroom{ object-position:center 70% }
+.carousel-fade .cap{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  margin:0; padding:0; font-weight:800;
+  font-size:clamp(14px, 1.6vw, 18px);
+  letter-spacing:.14em; text-transform:uppercase;
+  color:#fff; text-align:center; text-shadow:0 2px 8px rgba(0,0,0,.8); white-space:nowrap;
+}
+
+/* ============== 8. TESTIMONIOS (compacto + carrusel) ============== */
+#testimonios.section{ position:relative; overflow:hidden; padding: clamp(24px, 4vw, 36px) 0 }
+#testimonios.section::before{
+  content:""; position:absolute; inset:-8%; z-index:0;
+  background-image:url('ramitas.jpg'); /* JPG universal */
+  background-size:cover; background-position:50% 50%;
+  transform: translate(var(--tx,0), var(--ty,0)) scale(1.00);
+  transition:.25s;
+}
+#testimonios.section::after{ content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:rgba(0,0,0,.35) }
+#testimonios .wrap{ position:relative; z-index:2; max-width:1240px; padding:16px 24px }
+#testimonios h2{ color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.6); margin:0 0 16px }
+
+/* Carrusel */
+.quotes-viewport{
+  position:relative;
+  overflow-x:auto;               /* ← permite deslizar manualmente */
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;  /* ← encastre por tarjeta/página */
+  -webkit-overflow-scrolling:touch;
+}
+.quotes-viewport::-webkit-scrollbar{ display:none }
+.quotes-track{
+  display:flex;
+  gap:18px;                      /* debe coincidir con JS */
+}
+
+/* Slide (blockquote) más compacto */
+.quotes-track blockquote{
+  flex:0 0 calc(100% - 1px);     /* 1 por vista en mobile */
+  margin:0; padding:16px;
+  background:rgba(255,255,255,0.65);  /* ← blanco translúcido */
+  border:0px solid var(--line);
+  border-radius:14px; display:flex; flex-direction:column;
+  min-height:200px;
+  scroll-snap-align:start;
+}
+
+/* 3 por vista en desktop */
+@media (min-width:900px){
+  .quotes-track blockquote{
+    flex:0 0 calc((100% - 36px) / 3); /* 3 por vista, gap 18px*2 */
+    min-height:220px;
+  }
+}
+
+/* Texto interno de testimonios */
+blockquote .q{
+  margin:0; color:var(--ink);
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:7; overflow:hidden;
+}
+blockquote.open .q{ -webkit-line-clamp:unset }
+blockquote .author{ display:block; color:var(--muted); margin-top:10px }
+blockquote .more{
+  align-self:flex-start; margin-top:10px; font-weight:800; font-size:.92rem;
+  text-decoration:underline; cursor:pointer; color:var(--ink); background:none; border:none; padding:0;
+}
+/* ============== 9. RECURSOS ============== */
+#recursos .resources-head{ max-width:760px }
+#recursos .resources-head .form{
+  display:flex; gap:10px; flex-wrap:wrap; margin:12px 0;
+}
+#recursos .resources-head .form input{
+  flex:1 1 260px; padding:12px 16px; border:1px solid var(--line);
+  border-radius:999px; background:transparent; color:inherit; font:inherit;
+}
+
+.resources-grid{
+  list-style:none; padding:0; margin:28px 0 0;
+  display:grid; gap:18px;
+  grid-template-columns:1fr;
+}
+@media (min-width:680px){ .resources-grid{ grid-template-columns:repeat(2,1fr) } }
+@media (min-width:1024px){ .resources-grid{ grid-template-columns:repeat(4,1fr) } }
+
+.resource-card{
+  display:flex; flex-direction:column;
+  gap:8px; align-items:flex-start;
+  padding:16px 18px; text-decoration:none;
+  background:#f4efe9; color:var(--ink);
+  border:0px solid var(--line); border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.04);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  height:100%; min-height:220px;
+}
+.resource-card:hover{ transform:translateY(-3px); box-shadow:0 10px 24px rgba(0,0,0,.08) }
+
+.res-icon img{ width:24px; height:24px; display:block; filter:invert(1) }
+.res-title{ margin:0; font-size:1rem; font-weight:800 }
+.res-sub{ margin:0; font-size:.93rem; color: color-mix(in srgb, var(--ink) 75%, var(--muted)); max-width:32ch }
+.res-cta{
+  margin-top:auto; align-self:center; width:auto;
+  padding:8px 14px; border-radius:999px; font-weight:800; letter-spacing:.02em;
+  border:1px solid var(--ink); color:var(--ink); background:transparent;
+}
+.resource-card:hover .res-cta{ background:#111; color:#fff; border-color:#111 }
+
+/* ============== 10. CTA / FOOTER / REVEAL ============== */
+.cta{padding:80px 0; background:linear-gradient(180deg, var(--bg), var(--sand))}
+.footer{border-top:1px solid var(--line); background:#fff; color:#4b4f55}
+.footer nav a{color:inherit; text-decoration:none}
+.footer nav a:hover{color:#111}
+.footer p{margin:6px 0 0}
+
+.reveal{ opacity:0; transform: translateY(14px) }
+.reveal--visible{ opacity:1; transform:none; transition: opacity .45s ease, transform .45s ease }
+@media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important; scroll-behavior:auto!important} }
+
+.notice{ margin-top:12px; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:var(--sand); color:var(--ink); max-width:48ch; font-size:.95rem }
+#gracias{ display:none }
+
+/* ===== Footer mejorado ===== */
+.footer .footer-inner{ display:flex; flex-direction:column; align-items:center; gap:14px; padding:24px }
+.footer .social{ display:flex; gap:12px; align-items:center; justify-content:center }
+.footer .social a{ width:40px; height:40px; display:grid; place-items:center; border-radius:50%; background:#111; border:1px solid #111; transition:transform .18s ease, filter .18s ease, background .18s ease }
+.footer .social a:hover{ transform:translateY(-2px) }
+.footer .social img{ width:22px; height:22px; display:block; filter:none }
+.footer .footer-links{ text-align:center }
+.footer .footer-links a{ color:inherit; text-decoration:none }
+.footer .footer-links a:hover{ color:#111; text-decoration:underline }
+.footer .disclaimer{ max-width:80ch; margin:2px 0 0; text-align:center; font-size:12px; line-height:1.6; color: var(--muted) }
+.footer .copy{ margin:0; font-size:13px; color: color-mix(in srgb, var(--ink) 55%, var(--muted)) }
+
+/* Ajuste específico para la sección SOBRE MÍ */
+#sobre p {
+  text-align: justify;
+}
+/* ===== Menú móvil como overlay a pantalla completa ===== */
+body.no-scroll{ overflow:hidden; }   /* bloquea el scroll cuando el menú está abierto */
+
+/* ===== Overlay móvil de navegación (pantalla completa) ===== */
+body.no-scroll{ overflow:hidden; }
+
+/* ===== Overlay de menú móvil a pantalla completa ===== */
+body.no-scroll{ overflow:hidden; } /* bloquea scroll cuando está abierto */
+
+.mobile-social{ display:none; }    /* por defecto, NUNCA en desktop */
+
+/* ====== OVERLAY MENÚ MÓVIL (forzado) ====== */
+@media (max-width: 899px){
+
+  /* el overlay ocupa TODA la pantalla y es blanco sólido */
+  header.nav .links{
+    position: fixed !important;
+    top: 0; right: 0; bottom: 0; left: 0;
+    width: 100vw; height: 100vh;
+    margin: 0 !important;
+    max-width: none !important;
+    padding: 24px;
+    display: none;                  /* cerrado */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 26px;
+    background: #fff !important;    /* ← BLANCO */
+    z-index: 10000;                 /* por encima de todo */
+  }
+  header.nav .links.open{ display:flex; }
+
+  /* oculto la marca detrás del overlay */
+  header.nav.is-open .brand{ opacity:0; visibility:hidden; pointer-events:none; }
+
+  /* botón hamburguesa visible y por encima (sin “X”) */
+  header.nav .menu{ position:relative; z-index:11001; color:#111; }
+  header.nav.is-open .menu{ position:fixed; right:24px; top:16px; color:#111; }
+
+  /* textos en negro dentro del overlay */
+  header.nav .links a{
+    color:#111;
+    font-size:22px;
+    letter-spacing:.16em;
+    font-weight:800;
+    text-decoration:none;
+  }
+  header.nav .links .btn{ font-size:18px; padding:12px 22px; }
+
+  /* iconos al pie en NEGRO (tus PNG blancos se invierten) */
+  header.nav .links .mobile-social{ display:flex; gap:18px; margin-top:28px; }
+  header.nav .links .mobile-social img{ width:28px; height:28px; display:block; filter:invert(1); }
+}
+
+/* en desktop, ocultar siempre los iconos del overlay */
+@media (min-width:900px){
+  header.nav .links .mobile-social{ display:none !important; }
+}
