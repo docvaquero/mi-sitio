@@ -24,16 +24,26 @@
   })();
 
 
-  /* Smooth scroll */
+  /* Smooth scroll (cierra bien el overlay) */
   document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href^="#"]'); if (!a) return;
-    const id = a.getAttribute('href').slice(1); const el = document.getElementById(id);
-    if (el){
-      e.preventDefault();
-      el.scrollIntoView({ behavior:'smooth', block:'start' });
-      const nav=$('.links'), btn=$('.menu');
-      if (nav && btn){ nav.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
-    }
+    const a = e.target.closest('a[href^="#"]'); 
+    if (!a) return;
+
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    e.preventDefault();
+    el.scrollIntoView({ behavior:'smooth', block:'start' });
+
+    // cierra overlay móvil completamente
+    const nav    = document.querySelector('.links');
+    const btn    = document.querySelector('.menu');
+    const header = document.querySelector('.nav');
+    if (nav)    nav.classList.remove('open');
+    if (btn)    btn.setAttribute('aria-expanded','false');
+    if (header) header.classList.remove('is-open');
+    document.body.classList.remove('no-scroll');
   });
 
   /* Reveal on scroll (con fallback) */
