@@ -176,13 +176,14 @@ h3{font-size:clamp(18px,2.6vw,22px)}
 .carousel-fade .slide{ position:absolute; inset:0; opacity:0; transition:opacity .45s ease }
 .carousel-fade .slide.is-active{ opacity:1; }
 .carousel-fade img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block }
-.carousel-fade img.pos-top{ object-position:center 32% }
-.carousel-fade img.pos-center{ object-position:center 45% }
-.carousel-fade img.pos-headroom{ object-position:center 70% }
+.carousel-fade img.pos-top{ object-position:center 28% }
+.carousel-fade img.pos-center{ object-position:center 42% }
+.carousel-fade img.pos-headroom{ object-position:center 60% }
 .carousel-fade .cap{
   position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
   margin:0; padding:0; font-weight:800;
-  font-size:clamp(14px, 1.6vw, 18px);
+  font-size:clamp(16px, 1.6vw, 18px);
+  text-shadow: 2px 2px 4px black; /* Desplazamiento horizontal, vertical, desenfoque, color */
   letter-spacing:.14em; text-transform:uppercase;
   color:#fff; text-align:center; text-shadow:0 2px 8px rgba(0,0,0,.8); white-space:nowrap;
 }
