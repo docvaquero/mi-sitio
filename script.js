@@ -391,9 +391,15 @@
       }, 140);
     }, {passive:true});
 
+    // === Flechas (desktop) ===
+    const prevBtn = document.querySelector('#testimonios .quotes-prev');
+    const nextBtn = document.querySelector('#testimonios .quotes-next');
+    if (prevBtn) prevBtn.addEventListener('click', () => { stop(); go(page - 1, true); play(); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { stop(); go(page + 1, true); play(); });
+
     // Responsive y pestaña oculta
-    window.addEventListener('resize', () => { stop(); compute(); go(page,false); play(); }, {passive:true});
-    document.addEventListener('visibilitychange', () => document.hidden ? stop() : play());
+    window.addEventListener('resize', () => { stop(); compute(); go(page,false); play(); }, { passive:true });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else play(); });
 
     // Inicio tras cargar layout (asegura medidas correctas)
     window.addEventListener('load', () => { compute(); go(page,false); play(); });
