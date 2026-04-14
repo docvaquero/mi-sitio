@@ -64,8 +64,8 @@ h3{font-size:clamp(18px,2.6vw,22px)}
 .nav{position:sticky; top:0; z-index:30; background:rgba(255,255,255,.9); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex; justify-content:space-between; align-items:center}
 .brand{ text-decoration:none; color:var(--ink); letter-spacing:.18em; font-weight:900; font-size:20px }
-.links{display:none; gap:16px; align-items:center}
-.links a{ color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.15em; font-size:12px }
+.links{display:none; gap:12px; align-items:center}
+.links a{ color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.09em; font-size:11.5px }
 .links a:hover{text-decoration:underline}
 .menu{background:none; border:0; font-size:22px; color:var(--ink)}
 @media (min-width:900px){ .links{display:flex} .menu{display:none} }
@@ -103,6 +103,36 @@ h3{font-size:clamp(18px,2.6vw,22px)}
 .hero-veil{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.48), rgba(0,0,0,.28) 40%, rgba(0,0,0,.08) 70%); mix-blend-mode:multiply; z-index:1 }
 
 /* ========= 6) STEPS (cómo funciona) ========= */
+/* --- Sección "Qué es" con imagen del teléfono --- */
+.que-es-grid{
+  display:grid;
+  gap:48px;
+  align-items:center;
+}
+@media (min-width:960px){
+  .que-es-grid{ grid-template-columns:1fr 1fr; }
+}
+
+.col-phone{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.phone-img{
+  width:100%;
+  max-width:100%;
+  height:auto;
+  border-radius:18px;
+  box-shadow:0 24px 64px rgba(0,0,0,.14);
+  transition:transform .3s ease, box-shadow .3s ease;
+  display:block;
+}
+.phone-img:hover{
+  transform:translateY(-6px) scale(1.01);
+  box-shadow:0 32px 72px rgba(0,0,0,.18);
+}
+
+/* ========= 7) STEPS (cómo funciona) ========= */
 .steps{
   display:grid; gap:18px;
   grid-template-columns:1fr;
