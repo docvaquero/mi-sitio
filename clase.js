@@ -99,28 +99,20 @@ document.addEventListener('click', (e) => {
   }
 })();
 
-/* ========================= 6) EmailJS — Formulario de inscripción ========================= */
+/* ========================= 6) Google Apps Script — Formulario de inscripción ========================= */
 (() => {
-  // ─── CONFIGURACIÓN EmailJS ───────────────────────────────────────────────
-  // Reemplazá estos valores con los tuyos de emailjs.com
-  const EJS_PUBLIC_KEY    = 'TU_PUBLIC_KEY';        // Account → General → Public Key
-  const EJS_SERVICE_ID    = 'TU_SERVICE_ID';        // Email Services → Service ID
-  const EJS_TPL_NOTIF     = 'TU_TEMPLATE_NOTIF';   // template que llega a vos
-  const EJS_TPL_CONFIRM   = 'TU_TEMPLATE_CONFIRM'; // template que llega al comprador
+  // ─── ÚNICA CONFIGURACIÓN NECESARIA ────────────────────────────────────────
+  // Pegá acá la URL que te da Google Apps Script al deployar (ver instrucciones)
+  const APPS_SCRIPT_URL = 'PEGAR_URL_DEL_DEPLOYMENT_AQUI';
   // ─────────────────────────────────────────────────────────────────────────
 
-  const form     = document.getElementById('form-inscripcion');
-  const pagoSec  = document.getElementById('pago');
-  const inscSec  = document.getElementById('inscripcion');
+  const form      = document.getElementById('form-inscripcion');
+  const pagoSec   = document.getElementById('pago');
+  const inscSec   = document.getElementById('inscripcion');
   const btnEnviar = document.getElementById('btn-inscribirse');
-  const msg      = document.getElementById('form-msg');
+  const msg       = document.getElementById('form-msg');
 
   if (!form) return;
-
-  // Inicializar EmailJS solo si hay public key configurada
-  if (EJS_PUBLIC_KEY !== 'TU_PUBLIC_KEY') {
-    emailjs.init({ publicKey: EJS_PUBLIC_KEY });
-  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -135,26 +127,32 @@ document.addEventListener('click', (e) => {
     msg.textContent       = '';
     msg.className         = 'form-msg';
 
-    // Si EmailJS no está configurado todavía → saltar directo al pago
-    if (EJS_PUBLIC_KEY === 'TU_PUBLIC_KEY') {
+    // Si todavía no configuraste el script → ir directo al pago
+    if (APPS_SCRIPT_URL === 'PEGAR_URL_DEL_DEPLOYMENT_AQUI') {
       mostrarPago();
       return;
     }
 
     try {
-      // Email de notificación a Federico
-      await emailjs.send(EJS_SERVICE_ID, EJS_TPL_NOTIF, { nombre, email, pais });
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, email, pais }),
+      });
 
-      // Email de confirmación al comprador
-      await emailjs.send(EJS_SERVICE_ID, EJS_TPL_CONFIRM, { nombre, email, pais });
+      const data = await res.json().catch(() => ({}));
 
-      // Evento Meta Pixel (lead)
+      if (!res.ok || data.ok === false) throw new Error(data.error || 'Error del servidor');
+
+      // Evento Meta Pixel
       if (typeof fbq === 'function') fbq('track', 'Lead');
 
       mostrarPago();
+
     } catch (err) {
-      console.error('EmailJS error:', err);
-      msg.textContent = 'Hubo un error al enviar. Intentá de nuevo o escribinos por WhatsApp.';
+      console.error('Error inscripción:', err);
+      msg.textContent = 'No se pudo enviar. Intentá de nuevo o escribinos por WhatsApp.';
+      msg.className   = 'form-msg';
       btnEnviar.disabled    = false;
       btnEnviar.textContent = 'Inscribirme →';
     }
