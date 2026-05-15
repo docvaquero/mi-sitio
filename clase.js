@@ -98,3 +98,73 @@ document.addEventListener('click', (e) => {
     update();
   }
 })();
+
+/* ========================= 6) EmailJS — Formulario de inscripción ========================= */
+(() => {
+  // ─── CONFIGURACIÓN EmailJS ───────────────────────────────────────────────
+  // Reemplazá estos valores con los tuyos de emailjs.com
+  const EJS_PUBLIC_KEY    = 'TU_PUBLIC_KEY';        // Account → General → Public Key
+  const EJS_SERVICE_ID    = 'TU_SERVICE_ID';        // Email Services → Service ID
+  const EJS_TPL_NOTIF     = 'TU_TEMPLATE_NOTIF';   // template que llega a vos
+  const EJS_TPL_CONFIRM   = 'TU_TEMPLATE_CONFIRM'; // template que llega al comprador
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const form     = document.getElementById('form-inscripcion');
+  const pagoSec  = document.getElementById('pago');
+  const inscSec  = document.getElementById('inscripcion');
+  const btnEnviar = document.getElementById('btn-inscribirse');
+  const msg      = document.getElementById('form-msg');
+
+  if (!form) return;
+
+  // Inicializar EmailJS solo si hay public key configurada
+  if (EJS_PUBLIC_KEY !== 'TU_PUBLIC_KEY') {
+    emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    const nombre = form.nombre.value.trim();
+    const email  = form.email.value.trim();
+    const pais   = form.pais.value;
+
+    btnEnviar.disabled    = true;
+    btnEnviar.textContent = 'Enviando…';
+    msg.textContent       = '';
+    msg.className         = 'form-msg';
+
+    // Si EmailJS no está configurado todavía → saltar directo al pago
+    if (EJS_PUBLIC_KEY === 'TU_PUBLIC_KEY') {
+      mostrarPago();
+      return;
+    }
+
+    try {
+      // Email de notificación a Federico
+      await emailjs.send(EJS_SERVICE_ID, EJS_TPL_NOTIF, { nombre, email, pais });
+
+      // Email de confirmación al comprador
+      await emailjs.send(EJS_SERVICE_ID, EJS_TPL_CONFIRM, { nombre, email, pais });
+
+      // Evento Meta Pixel (lead)
+      if (typeof fbq === 'function') fbq('track', 'Lead');
+
+      mostrarPago();
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      msg.textContent = 'Hubo un error al enviar. Intentá de nuevo o escribinos por WhatsApp.';
+      btnEnviar.disabled    = false;
+      btnEnviar.textContent = 'Inscribirme →';
+    }
+  });
+
+  function mostrarPago() {
+    if (inscSec)  inscSec.style.display  = 'none';
+    if (pagoSec) {
+      pagoSec.style.display = 'block';
+      pagoSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+})();
