@@ -99,63 +99,71 @@ document.addEventListener('click', (e) => {
   }
 })();
 
-/* ========================= 6) Google Apps Script — Formulario de inscripción ========================= */
+/* ========================= 6) Google Apps Script — Formulario ========================= */
 (() => {
-  // ─── ÚNICA CONFIGURACIÓN NECESARIA ────────────────────────────────────────
-  // Pegá acá la URL que te da Google Apps Script al deployar (ver instrucciones)
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxIyz26pLUHMoIV_HneimuUOW1vmFUgmdTfV58t6ptHc3wGXZRmZlJpB8Bx4BlPcrU5/exec';
-  // ─────────────────────────────────────────────────────────────────────────
 
-  const form      = document.getElementById('form-inscripcion');
-  const pagoSec   = document.getElementById('pago');
-  const inscSec   = document.getElementById('inscripcion');
-  const btnEnviar = document.getElementById('btn-inscribirse');
-  const msg       = document.getElementById('form-msg');
+  // Tu número de WhatsApp con código de país, sin + ni espacios
+  // Ejemplo Argentina: 5491155554444  (54=AR, 9=móvil, los 8 dígitos del número)
+  // Dejalo vacío hasta que lo tengas: el botón igualmente va a abrir tu WhatsApp
+  const WA_NUMERO = '';
+  const WA_LINK_FALLBACK = 'https://wa.link/kcppfm';
+
+  const form          = document.getElementById('form-inscripcion');
+  const pagoSec       = document.getElementById('pago');
+  const inscSec       = document.getElementById('inscripcion');
+  const btnEnviar     = document.getElementById('btn-inscribirse');
+  const msg           = document.getElementById('form-msg');
+  const selPais       = document.getElementById('pais');
+  const campoPaisOtro = document.getElementById('campo-pais-otro');
+  const inputPaisOtro = document.getElementById('pais-otro');
 
   if (!form) return;
 
-  form.addEventListener('submit', async (e) => {
+  // Mostrar / ocultar campo "Otro país"
+  if (selPais && campoPaisOtro) {
+    selPais.addEventListener('change', () => {
+      const esOtro = selPais.value === 'Otro';
+      campoPaisOtro.style.display = esOtro ? 'flex' : 'none';
+      if (inputPaisOtro) inputPaisOtro.required = esOtro;
+    });
+  }
+
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (!form.checkValidity()) { form.reportValidity(); return; }
 
     const nombre = form.nombre.value.trim();
     const email  = form.email.value.trim();
-    const pais   = form.pais.value;
+    const pais   = (selPais.value === 'Otro' && inputPaisOtro)
+                   ? inputPaisOtro.value.trim()
+                   : selPais.value;
 
     btnEnviar.disabled    = true;
     btnEnviar.textContent = 'Enviando…';
     msg.textContent       = '';
-    msg.className         = 'form-msg';
 
-    // Si todavía no configuraste el script → ir directo al pago
-    if (APPS_SCRIPT_URL === 'PEGAR_URL_DEL_DEPLOYMENT_AQUI') {
-      mostrarPago();
-      return;
+    // Envío no-cors + URLSearchParams (evita preflight CORS de Google Apps Script)
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode:   'no-cors',
+      body:   new URLSearchParams({ nombre, email, pais }),
+    }).catch(() => {});  // fire & forget — el servidor igual recibe el POST
+
+    // Evento Meta Pixel
+    if (typeof fbq === 'function') fbq('track', 'Lead');
+
+    // Construir link de WhatsApp con datos pre-cargados
+    const btnWs = document.getElementById('btn-ws-comprobante');
+    if (btnWs) {
+      const texto = `Hola! Te mando el comprobante para la clase del 6 de junio.\nNombre: ${nombre}\nEmail: ${email}`;
+      const url = WA_NUMERO
+        ? `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(texto)}`
+        : WA_LINK_FALLBACK;
+      btnWs.setAttribute('href', url);
     }
 
-    try {
-      const res = await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, pais }),
-      });
-
-      const data = await res.json().catch(() => ({}));
-
-      if (!res.ok || data.ok === false) throw new Error(data.error || 'Error del servidor');
-
-      // Evento Meta Pixel
-      if (typeof fbq === 'function') fbq('track', 'Lead');
-
-      mostrarPago();
-
-    } catch (err) {
-      console.error('Error inscripción:', err);
-      msg.textContent = 'No se pudo enviar. Intentá de nuevo o escribinos por WhatsApp.';
-      msg.className   = 'form-msg';
-      btnEnviar.disabled    = false;
-      btnEnviar.textContent = 'Inscribirme →';
-    }
+    mostrarPago();
   });
 
   function mostrarPago() {

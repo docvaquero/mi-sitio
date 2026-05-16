@@ -207,6 +207,10 @@
               <option value="Otro">Otro país</option>
             </select>
           </div>
+          <div class="campo" id="campo-pais-otro" style="display:none">
+            <label for="pais-otro">¿Cuál es tu país?</label>
+            <input type="text" id="pais-otro" name="pais_otro" placeholder="Escribí tu país" autocomplete="country-name" maxlength="100">
+          </div>
           <button type="submit" class="btn btn-primary btn-full" id="btn-inscribirse">Inscribirme →</button>
           <p id="form-msg" class="form-msg" aria-live="polite"></p>
         </form>
@@ -221,19 +225,21 @@
         <p class="lead">Hacé el pago y después enviá el comprobante a WhatsApp. Te mandamos el link de Google Meet y el material.</p>
 
         <div class="pago-btns">
-          <a class="btn btn-primary btn-pago" href="https://mpago.la/2K19BGW" target="_blank" rel="noopener">
-            Pagar con Mercado Pago<br>
-            <small>Argentina · ARS 35.000</small>
+          <a class="btn-pago-card btn-pago-mp" href="https://mpago.la/2K19BGW" target="_blank" rel="noopener noreferrer">
+            <div class="logo-mp">mercado<span>pago</span></div>
+            <div class="pago-monto">ARS 35.000</div>
+            <div class="pago-region">Para Argentina</div>
           </a>
-          <a class="btn btn-light btn-pago" href="https://www.paypal.com/ncp/payment/5YSGB32N7CZ2W" target="_blank" rel="noopener">
-            Pagar con PayPal<br>
-            <small>Exterior · USD 42</small>
+          <a class="btn-pago-card btn-pago-pp" href="https://www.paypal.com/ncp/payment/5YSGB32N7CZ2W" target="_blank" rel="noopener noreferrer">
+            <div class="logo-pp"><b>Pay</b>Pal</div>
+            <div class="pago-monto">USD 42</div>
+            <div class="pago-region">Para el exterior</div>
           </a>
         </div>
 
         <div class="pago-ws">
-          <p>Después de pagar, enviá el comprobante por WhatsApp y te confirmamos tu lugar:</p>
-          <a class="btn btn-ghost-dark" href="https://wa.link/kcppfm" target="_blank" rel="noopener">
+          <p>Después de pagar, tomá una captura del comprobante y enviásela por WhatsApp. Cuando lo confirme te mando el link de Google Meet y el material.</p>
+          <a class="btn btn-ghost-dark" id="btn-ws-comprobante" href="https://wa.link/kcppfm" target="_blank" rel="noopener noreferrer">
             Enviar comprobante por WhatsApp
           </a>
         </div>
