@@ -103,7 +103,7 @@ document.addEventListener('click', (e) => {
 (() => {
   // ─── ÚNICA CONFIGURACIÓN NECESARIA ────────────────────────────────────────
   // Pegá acá la URL que te da Google Apps Script al deployar (ver instrucciones)
-  const APPS_SCRIPT_URL = 'PEGAR_URL_DEL_DEPLOYMENT_AQUI';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxIyz26pLUHMoIV_HneimuUOW1vmFUgmdTfV58t6ptHc3wGXZRmZlJpB8Bx4BlPcrU5/exec';
   // ─────────────────────────────────────────────────────────────────────────
 
   const form      = document.getElementById('form-inscripcion');
