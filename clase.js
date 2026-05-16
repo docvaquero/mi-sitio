@@ -106,7 +106,7 @@ document.addEventListener('click', (e) => {
   // Tu número de WhatsApp con código de país, sin + ni espacios
   // Ejemplo Argentina: 5491155554444  (54=AR, 9=móvil, los 8 dígitos del número)
   // Dejalo vacío hasta que lo tengas: el botón igualmente va a abrir tu WhatsApp
-  const WA_NUMERO = '';
+  const WA_NUMERO = '5491123099063';
   const WA_LINK_FALLBACK = 'https://wa.link/kcppfm';
 
   const form          = document.getElementById('form-inscripcion');
