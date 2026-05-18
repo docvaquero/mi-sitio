@@ -400,6 +400,16 @@ h3{font-size:clamp(18px,2.6vw,22px)}
 }
 .profesionales-nota p{ margin:0; font-size:15px; color:var(--ink); line-height:1.65; }
 
+.pasos-lista{
+  margin:1.5rem 0 2rem;
+  padding-left:1.5rem;
+  display:flex;
+  flex-direction:column;
+  gap:.75rem;
+}
+.pasos-lista li{ font-size:15px; color:var(--muted); line-height:1.6; }
+.pasos-lista li strong{ color:var(--ink); }
+
 /* ── Formulario de inscripción ── */
 .inscripcion-form{
   margin-top:32px;
