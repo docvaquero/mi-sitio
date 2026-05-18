@@ -391,6 +391,13 @@ h3{font-size:clamp(18px,2.6vw,22px)}
   margin:0;
 }
 .precio-label{ font-size:14px; font-weight:500; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; }
+.precio-early-bird{
+  display:inline-block;
+  font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:#b85c00; background:#fff3e6; border:1px solid #f5c08a;
+  border-radius:4px; padding:3px 10px; margin:0 0 8px;
+}
+.precio-futuro{ font-size:13px; color:var(--muted); margin:4px 0 20px; }
 
 .profesionales-nota{
   background:var(--sand);
