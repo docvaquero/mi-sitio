@@ -46,7 +46,14 @@ document.addEventListener('click', (e) => {
   els.forEach(el => io.observe(el));
 })();
 
-/* ========================= 5) Parallax (HERO + #comprar) — desktop: puntero / móvil: scroll ========================= */
+/* ========================= 6) Auto-hide promo pasada la fecha ========================= */
+(() => {
+  // Fecha real de corte (hora Argentina, UTC-3)
+  const PROMO_END = new Date('2026-05-28T23:59:59-03:00');
+  if (new Date() > PROMO_END) {
+    $$('.js-promo').forEach(el => { el.style.display = 'none'; });
+  }
+})();
 (() => {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
