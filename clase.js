@@ -49,7 +49,7 @@ document.addEventListener('click', (e) => {
 /* ========================= 6) Auto-hide promo pasada la fecha ========================= */
 (() => {
   // Fecha real de corte (hora Argentina, UTC-3)
-  const PROMO_END = new Date('2026-05-30T23:59:59-03:00');
+  const PROMO_END = new Date('2026-05-31T23:59:59-03:00');
   if (new Date() > PROMO_END) {
     $$('.js-promo').forEach(el => { el.style.display = 'none'; });
   }
