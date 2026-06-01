@@ -453,6 +453,30 @@ h3{font-size:clamp(18px,2.6vw,22px)}
   text-shadow: none;
   white-space: nowrap;
 }
+.hero-promo-cupos {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: rgba(255,200,200,.95);
+  margin: 4px 0 0;
+  text-shadow: none;
+}
+
+/* ── Cupos aviso en sección de pago ── */
+.cupos-aviso {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #b91c1c;
+  background: #fff1f1;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  padding: 6px 14px;
+  margin-bottom: 20px;
+  letter-spacing: .03em;
+}
 @media (max-width: 480px) {
   .hero-promo {
     display: flex;        /* ocupa todo el ancho disponible */
