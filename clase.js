@@ -181,3 +181,21 @@ document.addEventListener('click', (e) => {
     }
   }
 })();
+
+/* ============ Lazy-load videos ============ */
+(function(){
+  document.querySelectorAll('.js-vt-lazy').forEach(function(wrap){
+    var btn = wrap.querySelector('.vt-lazy-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function(){
+      var iframe = document.createElement('iframe');
+      iframe.src = wrap.dataset.src;
+      iframe.allow = 'autoplay';
+      iframe.allowFullscreen = true;
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0';
+      iframe.title = 'Reproductor de video';
+      btn.remove();
+      wrap.appendChild(iframe);
+    });
+  });
+})();

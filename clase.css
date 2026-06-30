@@ -603,3 +603,17 @@ h3{font-size:clamp(18px,2.6vw,22px)}
   .pago-btns{ flex-direction:column; }
   .btn-pago{ width:100%; }
 }
+
+/* ============== SECCIÓN VIDEO PREVIEW CLASE ============== */
+.section-clase-video{ background:#fff; text-align:center }
+.video-clase-wrap{ max-width:800px; margin:0 auto }
+.video-clase-ratio{ position:relative; width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12) }
+.video-clase-ratio iframe{ position:absolute; inset:0; width:100%; height:100%; border:0 }
+/* Lazy placeholder */
+.vt-lazy-btn{ position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; cursor:pointer; background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%) }
+.vt-lazy-card{ display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:12px; padding:24px }
+.vt-lazy-label{ color:rgba(255,255,255,.5); font-size:11px; letter-spacing:.14em; font-weight:700; margin:0 }
+.vt-lazy-title{ color:#fff; font-size:clamp(15px,2.2vw,22px); font-weight:700; margin:0; max-width:520px; line-height:1.3 }
+.vt-lazy-play{ display:flex; transition:transform .18s }
+.vt-lazy-btn:hover .vt-lazy-play{ transform:scale(1.12) }
+.vt-lazy-dur{ color:rgba(255,255,255,.45); font-size:13px; margin:0 }

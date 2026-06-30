@@ -455,3 +455,23 @@ body.no-scroll{ overflow:hidden; } /* bloquea scroll cuando está abierto */
   #testimonios .quotes-prev,
   #testimonios .quotes-next { display: none; }
 }
+
+/* ============== SECCIÓN TESTIMONIO EN VIDEO ============== */
+.section-video-testi{ background:var(--sand) }
+.vt-inner{ display:grid; gap:48px; align-items:center }
+@media(min-width:860px){ .vt-inner{ grid-template-columns:1fr 1fr } }
+.vt-text .eyebrow{ margin-bottom:12px }
+.vt-text h2{ margin-bottom:16px }
+.vt-text .lead{ margin-bottom:0 }
+.vt-quote{ font-style:italic; color:var(--ink); font-size:clamp(15px,1.8vw,18px); border-left:3px solid var(--terra2); padding-left:16px; margin:24px 0 0; line-height:1.6 }
+.video-testi-wrap{ width:100% }
+.video-testi-ratio{ position:relative; width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden; box-shadow:0 16px 40px rgba(0,0,0,.15) }
+.video-testi-ratio iframe{ position:absolute; inset:0; width:100%; height:100%; border:0 }
+/* Lazy placeholder */
+.vt-lazy-btn{ position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; cursor:pointer; z-index:2; background:linear-gradient(160deg,#1a1008 0%,#2c1c10 60%,#111 100%) }
+.vt-lazy-card{ display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:14px; padding:32px }
+.vt-lazy-label{ color:#c8906a; font-size:11px; letter-spacing:.18em; font-weight:700; margin:0 }
+.vt-lazy-title{ color:#fff; font-size:clamp(15px,2.2vw,22px); font-weight:700; margin:0; max-width:520px; line-height:1.3 }
+.vt-lazy-play{ display:flex; transition:transform .18s }
+.vt-lazy-btn:hover .vt-lazy-play{ transform:scale(1.12) }
+.vt-lazy-dur{ color:rgba(243,231,221,.5); font-size:13px; margin:0 }
