@@ -119,7 +119,7 @@ async function confirmBooking(bookingId, paymentMethod, paymentId) {
 
     // Email al paciente
     await resend.emails.send({
-      from: 'Doc Vaquero <turnos@docvaquero.com>',
+      from: 'Doc Vaquero <turnos@auth.docvaquero.com>',
       to: booking.email,
       subject: '✅ Tu consulta está confirmada — Doc Vaquero',
       html: `
@@ -154,7 +154,7 @@ async function confirmBooking(bookingId, paymentMethod, paymentId) {
 
     // Email al doctor
     await resend.emails.send({
-      from: 'Sistema de Turnos <turnos@docvaquero.com>',
+      from: 'Sistema de Turnos <turnos@auth.docvaquero.com>',
       to: DOCTOR_EMAIL,
       subject: `🗓 Nueva consulta — ${booking.nombre} — ${timeStr} del ${dateStr}`,
       html: `
