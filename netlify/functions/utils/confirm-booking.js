@@ -16,7 +16,12 @@ const SLOT_DURATION_MIN = 50;
  * 3. Envía emails de confirmación al paciente y al doctor
  */
 async function confirmBooking(bookingId, paymentMethod, paymentId) {
-  const store = getStore({ name: 'bookings', consistency: 'strong' });
+  const store = getStore({
+    name: 'bookings',
+    consistency: 'strong',
+    siteID: process.env.NETLIFY_SITE_ID,
+    token: process.env.NETLIFY_AUTH_TOKEN,
+  });
   const booking = await store.get(bookingId, { type: 'json' });
 
   if (!booking) {

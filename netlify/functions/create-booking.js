@@ -46,7 +46,12 @@ exports.handler = async (event) => {
 
   // ── Guardar reserva pendiente en Netlify Blobs ───────────────────────────────
   const bookingId = crypto.randomUUID();
-  const store = getStore({ name: 'bookings', consistency: 'strong' });
+  const store = getStore({
+    name: 'bookings',
+    consistency: 'strong',
+    siteID: process.env.NETLIFY_SITE_ID,
+    token: process.env.NETLIFY_AUTH_TOKEN,
+  });
 
   await store.setJSON(bookingId, {
     id: bookingId,
