@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agendar consulta — Doc Vaquero</title>
+  <meta name="description" content="Agendá tu consulta online con Doc Vaquero. Elegí el horario, completá tus datos y pagá de forma segura.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="agendar.css" />
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/logo-icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/logo-icon.png">
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html#inicio">DOC&nbsp;VAQUERO</a>
+      <nav class="links" aria-label="principal">
+        <a href="index.html#sobre">SOBRE MÍ</a>
+        <a href="mitrabajo.html">MI TRABAJO</a>
+        <a href="microdosis.html">MICRODOSIS</a>
+        <a href="index.html#recursos">RECURSOS</a>
+        <a href="contacto.html">CONTACTO</a>
+        <a class="btn btn-solid" href="agendar.html" aria-current="page">AGENDAR</a>
+        <div class="mobile-social" aria-label="Redes móviles">
+          <a href="https://instagram.com/doc_vaquero" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="logo-blanco-instagram.png" alt="">
+          </a>
+          <a href="https://wa.link/kcppfm" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <img src="logo-blanco-whatsapp.png" alt="">
+          </a>
+        </div>
+      </nav>
+      <button class="menu" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ───── ESTADO: ÉXITO ───── -->
+    <section id="estado-ok" class="section estado-section" style="display:none">
+      <div class="wrap wrap-narrow text-center">
+        <div class="estado-icon">✅</div>
+        <h2>¡Tu consulta está confirmada!</h2>
+        <p class="lead">Te enviamos un email de confirmación con todos los detalles y el link de Google Meet.</p>
+        <p class="lead-sm">Revisá también tu carpeta de spam si no lo recibís en los próximos minutos.</p>
+        <a href="index.html" class="btn btn-primary" style="margin-top:24px">Volver al inicio</a>
+      </div>
+    </section>
+
+    <!-- ───── ESTADO: ERROR ───── -->
+    <section id="estado-error" class="section estado-section" style="display:none">
+      <div class="wrap wrap-narrow text-center">
+        <div class="estado-icon">❌</div>
+        <h2>Hubo un problema con el pago</h2>
+        <p class="lead">El pago no se completó. No se te cobró nada y podés intentar de nuevo.</p>
+        <a href="agendar.html" class="btn btn-primary" style="margin-top:24px">Intentar de nuevo</a>
+      </div>
+    </section>
+
+    <!-- ───── ESTADO: PENDIENTE MP ───── -->
+    <section id="estado-pendiente" class="section estado-section" style="display:none">
+      <div class="wrap wrap-narrow text-center">
+        <div class="estado-icon">⏳</div>
+        <h2>Pago en proceso</h2>
+        <p class="lead">Tu pago está siendo procesado por Mercado Pago. Cuando se confirme te enviamos el email de confirmación automáticamente.</p>
+        <a href="index.html" class="btn btn-primary" style="margin-top:24px">Volver al inicio</a>
+      </div>
+    </section>
+
+    <!-- ───── ESTADO: CANCELADO ───── -->
+    <section id="estado-cancelado" class="section estado-section" style="display:none">
+      <div class="wrap wrap-narrow text-center">
+        <div class="estado-icon">↩️</div>
+        <h2>Cancelaste el pago</h2>
+        <p class="lead">No te preocupes, no se realizó ningún cobro. Podés intentar de nuevo cuando quieras.</p>
+        <a href="agendar.html" class="btn btn-primary" style="margin-top:24px">Intentar de nuevo</a>
+      </div>
+    </section>
+
+    <!-- ───── FLUJO PRINCIPAL ───── -->
+    <section id="flujo-principal" class="section">
+      <div class="wrap wrap-booking">
+
+        <div class="booking-header">
+          <p class="eyebrow">CONSULTA ONLINE · GOOGLE MEET · 50 MIN</p>
+          <h1>Agendar consulta</h1>
+          <p class="lead">Elegí un día y horario, completá tus datos y pagá. Todo en un solo lugar.</p>
+        </div>
+
+        <!-- Indicador de pasos -->
+        <ol class="steps" aria-label="Pasos del proceso">
+          <li class="step active" data-step="1"><span class="step-num">1</span><span class="step-label">Elegí el día</span></li>
+          <li class="step" data-step="2"><span class="step-num">2</span><span class="step-label">Elegí el horario</span></li>
+          <li class="step" data-step="3"><span class="step-num">3</span><span class="step-label">Tus datos</span></li>
+          <li class="step" data-step="4"><span class="step-num">4</span><span class="step-label">Pago</span></li>
+        </ol>
+
+        <!-- ─── PASO 1: Calendario ─── -->
+        <div id="paso-1" class="paso paso-active">
+          <h2 class="paso-title">¿Qué día te viene bien?</h2>
+          <p class="paso-subtitle">Lunes a viernes · Horario Argentina · Solo días disponibles</p>
+
+          <div class="calendar-nav">
+            <button id="cal-prev" class="cal-nav-btn" aria-label="Mes anterior">‹</button>
+            <span id="cal-month-label" class="cal-month-label"></span>
+            <button id="cal-next" class="cal-nav-btn" aria-label="Mes siguiente">›</button>
+          </div>
+
+          <div class="calendar-grid">
+            <div class="cal-weekdays">
+              <span>Dom</span><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span>
+            </div>
+            <div id="cal-days" class="cal-days" role="grid" aria-label="Calendario"></div>
+          </div>
+        </div>
+
+        <!-- ─── PASO 2: Horarios ─── -->
+        <div id="paso-2" class="paso" style="display:none">
+          <button class="back-btn" data-back="1">← Cambiar día</button>
+          <h2 class="paso-title">¿A qué hora?</h2>
+          <p id="paso-2-fecha" class="paso-subtitle"></p>
+
+          <div id="slots-loading" class="slots-loading" style="display:none">
+            <span class="spinner"></span> Consultando disponibilidad…
+          </div>
+          <div id="slots-empty" class="slots-empty" style="display:none">
+            No hay horarios disponibles ese día. Probá con otro.
+          </div>
+          <div id="slots-grid" class="slots-grid" role="group" aria-label="Horarios disponibles"></div>
+        </div>
+
+        <!-- ─── PASO 3: Datos personales ─── -->
+        <div id="paso-3" class="paso" style="display:none">
+          <button class="back-btn" data-back="2">← Cambiar horario</button>
+          <h2 class="paso-title">Tus datos</h2>
+          <p id="paso-3-resumen" class="paso-subtitle"></p>
+
+          <form id="form-datos" class="form-datos" novalidate>
+            <div class="campo">
+              <label for="nombre">Nombre completo</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Tu nombre y apellido" required autocomplete="name" maxlength="120">
+            </div>
+            <div class="campo">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="tu@email.com" required autocomplete="email" maxlength="200">
+            </div>
+            <div class="campo">
+              <label for="pais">¿Dónde vivís?</label>
+              <select id="pais" name="pais" required>
+                <option value="">Seleccioná tu país</option>
+                <option value="Argentina">Argentina</option>
+                <option value="México">México</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Chile">Chile</option>
+                <option value="Uruguay">Uruguay</option>
+                <option value="España">España</option>
+                <option value="Otro">Otro país</option>
+              </select>
+            </div>
+            <div class="campo" id="campo-pais-otro" style="display:none">
+              <label for="pais-otro">¿Cuál es tu país?</label>
+              <input type="text" id="pais-otro" name="pais_otro" placeholder="Escribí tu país" autocomplete="country-name" maxlength="80">
+            </div>
+            <p id="form-error" class="form-error" aria-live="polite" style="display:none"></p>
+            <button type="submit" class="btn btn-primary btn-full" id="btn-continuar">
+              Continuar al pago →
+            </button>
+          </form>
+        </div>
+
+        <!-- ─── PASO 4: Pago ─── -->
+        <div id="paso-4" class="paso" style="display:none">
+          <button class="back-btn" data-back="3">← Cambiar datos</button>
+          <h2 class="paso-title">Elegí cómo pagar</h2>
+          <p id="paso-4-resumen" class="paso-subtitle"></p>
+
+          <div id="pago-loading" class="slots-loading">
+            <span class="spinner"></span> Preparando opciones de pago…
+          </div>
+
+          <div id="pago-opciones" class="pago-opciones" style="display:none">
+            <div class="pago-precio">
+              <span class="pago-precio-label">Valor de la consulta</span>
+              <span class="pago-precio-ars">ARS 65.000</span>
+              <span class="pago-precio-sep">·</span>
+              <span class="pago-precio-usd">USD 55</span>
+            </div>
+
+            <!-- MP: solo Argentina -->
+            <a id="btn-mp" class="btn-pago-card btn-pago-mp" href="#" target="_blank" rel="noopener noreferrer" style="display:none">
+              <div class="logo-mp">mercado<span>pago</span></div>
+              <div class="pago-monto">ARS 65.000</div>
+              <div class="pago-region">Para Argentina</div>
+            </a>
+
+            <!-- PayPal: exterior -->
+            <a id="btn-pp" class="btn-pago-card btn-pago-pp" href="#" target="_blank" rel="noopener noreferrer" style="display:none">
+              <div class="logo-pp"><b>Pay</b>Pal</div>
+              <div class="pago-monto">USD 55</div>
+              <div class="pago-region">Para el exterior</div>
+            </a>
+
+            <p id="pago-error" class="form-error" style="display:none">
+              Hubo un problema al preparar el pago. Por favor, escribime por
+              <a href="https://wa.link/kcppfm" target="_blank" rel="noopener">WhatsApp</a>
+              para coordinar manualmente.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap tiny">
+      <nav aria-label="secundario">
+        <a href="index.html">INICIO</a> · <a href="mitrabajo.html">MI TRABAJO</a> · <a href="contacto.html">CONTACTO</a>
+      </nav>
+      <p>© <span id="y"></span> Doc Vaquero</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="agendar.js"></script>
+</body>
+</html>
