@@ -53,14 +53,18 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: `payment status: ${payment.status}` };
   }
 
-  const bookingId = payment.external_reference;
-  if (!bookingId) {
-    console.error('[mp-webhook] Pago sin external_reference:', paymentId);
-    return { statusCode: 200, body: 'no external_reference' };
+  // Decodificar datos de reserva desde external_reference (JSON compacto)
+  let booking;
+  try {
+    const raw = JSON.parse(payment.external_reference);
+    booking = { nombre: raw.n, email: raw.e, pais: raw.p, slotStart: raw.s, slotEnd: raw.t };
+  } catch {
+    console.error('[mp-webhook] external_reference no es JSON válido:', payment.external_reference);
+    return { statusCode: 200, body: 'invalid external_reference' };
   }
 
   try {
-    await confirmBooking(bookingId, 'mercadopago', String(paymentId));
+    await confirmBooking(booking, 'mercadopago', String(paymentId));
   } catch (err) {
     console.error('[mp-webhook] Error al confirmar reserva:', err.message);
     // Devolvemos 200 para que MP no reintente; el error quedó en los logs

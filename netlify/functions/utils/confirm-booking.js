@@ -1,7 +1,6 @@
 // netlify/functions/utils/confirm-booking.js
 // Lógica compartida: confirma reserva, crea evento en Google Calendar y envía emails
 
-const { getStore } = require('@netlify/blobs');
 const { google } = require('googleapis');
 const { Resend } = require('resend');
 
@@ -15,34 +14,11 @@ const SLOT_DURATION_MIN = 50;
  * 2. Crea el evento en Google Calendar con Google Meet
  * 3. Envía emails de confirmación al paciente y al doctor
  */
-async function confirmBooking(bookingId, paymentMethod, paymentId) {
-  const store = getStore({
-    name: 'bookings',
-    consistency: 'strong',
-    siteID: process.env.NETLIFY_SITE_ID,
-    token: process.env.NETLIFY_AUTH_TOKEN,
-  });
-  const booking = await store.get(bookingId, { type: 'json' });
-
+async function confirmBooking(booking, paymentMethod, paymentId) {
   if (!booking) {
-    console.error(`[confirmBooking] Booking ${bookingId} no encontrado`);
+    console.error('[confirmBooking] Datos de reserva no recibidos');
     return;
   }
-
-  // Idempotencia: si ya está confirmado, no hacer nada (webhooks duplicados)
-  if (booking.status === 'confirmed') {
-    console.log(`[confirmBooking] Booking ${bookingId} ya confirmado, ignorando`);
-    return;
-  }
-
-  // Marcar como confirmado
-  await store.setJSON(bookingId, {
-    ...booking,
-    status: 'confirmed',
-    paymentMethod,
-    paymentId,
-    confirmedAt: new Date().toISOString(),
-  });
 
   // ── Google Calendar ──────────────────────────────────────────────────────────
   let meetLink = '';

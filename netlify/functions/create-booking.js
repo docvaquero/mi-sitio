@@ -3,8 +3,6 @@
 // Guarda reserva pendiente, crea preferencia de MP y orden de PayPal
 // Devuelve { bookingId, mpUrl, paypalUrl }
 
-const { getStore } = require('@netlify/blobs');
-
 const SITE_URL = process.env.URL || 'https://docvaquero.com';
 const PRICE_ARS = 65000;
 const PRICE_USD = '55.00';
@@ -44,27 +42,19 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'El horario seleccionado ya pasó' }) };
   }
 
-  // ── Guardar reserva pendiente en Netlify Blobs ───────────────────────────────
+  // ── Preparar datos de reserva (se pasan en los metadatos del pago, sin Blobs) ──
   const bookingId = crypto.randomUUID();
-  const store = getStore({
-    name: 'bookings',
-    consistency: 'strong',
-    siteID: process.env.NETLIFY_SITE_ID,
-    token: process.env.NETLIFY_AUTH_TOKEN,
-  });
-
-  await store.setJSON(bookingId, {
-    id: bookingId,
-    nombre: nombre.trim().slice(0, 120),
-    email: email.trim().toLowerCase().slice(0, 200),
-    pais: pais.trim().slice(0, 80),
-    slotStart,
-    slotEnd,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    // Expira en 45 minutos (referencia; la limpieza se hace por status, no TTL)
-    expiresAt: new Date(Date.now() + 45 * 60 * 1000).toISOString(),
-  });
+  // Payload compacto para external_reference (límite 256 chars de MP)
+  const bookingPayload = {
+    id: bookingId.slice(0, 8),
+    n: nombre.trim().slice(0, 50),
+    e: email.trim().toLowerCase().slice(0, 80),
+    p: pais.trim().slice(0, 20),
+    s: slotStart,
+    t: slotEnd,
+  };
+  const externalRef = JSON.stringify(bookingPayload);
+  const dataB64 = Buffer.from(externalRef).toString('base64');
 
   // ── Crear preferencia de Mercado Pago ────────────────────────────────────────
   let mpUrl = null;
@@ -85,7 +75,7 @@ exports.handler = async (event) => {
           },
         ],
         payer: { email: email.trim().toLowerCase() },
-        external_reference: bookingId,
+        external_reference: externalRef,
         back_urls: {
           success: `${SITE_URL}/agendar.html?estado=ok`,
           failure: `${SITE_URL}/agendar.html?estado=error`,
@@ -127,7 +117,7 @@ exports.handler = async (event) => {
             {
               amount: { currency_code: 'USD', value: PRICE_USD },
               description: 'Consulta con Doc Vaquero',
-              custom_id: bookingId,
+              custom_id: bookingId.slice(0, 8),
             },
           ],
           application_context: {
@@ -135,8 +125,9 @@ exports.handler = async (event) => {
             locale: 'es-AR',
             landing_page: 'LOGIN',
             user_action: 'PAY_NOW',
-            return_url: `${SITE_URL}/.netlify/functions/paypal-capture?bookingId=${bookingId}`,
+            return_url: `${SITE_URL}/.netlify/functions/paypal-capture?data=${encodeURIComponent(dataB64)}`,
             cancel_url: `${SITE_URL}/agendar.html?estado=cancelado`,
+
           },
         }),
       });

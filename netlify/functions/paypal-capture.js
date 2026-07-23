@@ -8,9 +8,19 @@ const { confirmBooking } = require('./utils/confirm-booking');
 const SITE_URL = process.env.URL || 'https://docvaquero.com';
 
 exports.handler = async (event) => {
-  const { token, bookingId } = event.queryStringParameters || {};
+  const { token, data } = event.queryStringParameters || {};
 
-  if (!token || !bookingId) {
+  if (!token || !data) {
+    return redirect(`${SITE_URL}/agendar.html?estado=error`);
+  }
+
+  // Decodificar datos de reserva desde base64
+  let booking;
+  try {
+    const raw = JSON.parse(Buffer.from(decodeURIComponent(data), 'base64').toString('utf8'));
+    booking = { nombre: raw.n, email: raw.e, pais: raw.p, slotStart: raw.s, slotEnd: raw.t };
+  } catch {
+    console.error('[paypal-capture] No se pudo decodificar booking data');
     return redirect(`${SITE_URL}/agendar.html?estado=error`);
   }
 
@@ -50,7 +60,7 @@ exports.handler = async (event) => {
 
   // Confirmar reserva
   try {
-    await confirmBooking(bookingId, 'paypal', token);
+    await confirmBooking(booking, 'paypal', token);
   } catch (err) {
     console.error('[paypal-capture] Error al confirmar reserva:', err.message);
     // El pago ya fue capturado aunque la reserva haya fallado — registrar para revisar manualmente
