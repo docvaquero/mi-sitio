@@ -110,7 +110,7 @@
     btn.textContent = 'Procesando…';
 
     try {
-      const res = await fetch('/api/create-booking', {
+      const res = await fetch('/.netlify/functions/create-booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -262,7 +262,7 @@
     grid.innerHTML = '';
 
     try {
-      const res = await fetch(`/api/get-slots?date=${dateStr}`);
+      const res = await fetch(`/.netlify/functions/get-slots?date=${dateStr}`);
       const data = await res.json();
 
       loading.style.display = 'none';
