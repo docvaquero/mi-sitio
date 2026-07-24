@@ -57,7 +57,7 @@ exports.handler = async (event) => {
   let booking;
   try {
     const raw = JSON.parse(payment.external_reference);
-    booking = { nombre: raw.n, email: raw.e, pais: raw.p, slotStart: raw.s, slotEnd: raw.t };
+    booking = { nombre: raw.n, email: raw.e, pais: raw.p, slotStart: raw.s, slotEnd: raw.t, telefono: raw.f, motivo: raw.m };
   } catch {
     console.error('[mp-webhook] external_reference no es JSON válido:', payment.external_reference);
     return { statusCode: 200, body: 'invalid external_reference' };

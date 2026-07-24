@@ -198,12 +198,13 @@ body.no-scroll { overflow: hidden; }
 .form-datos { display: flex; flex-direction: column; gap: 16px; }
 .campo { display: flex; flex-direction: column; gap: 6px; }
 .campo label { font-size: 13px; font-weight: 700; color: var(--ink); }
-.campo input, .campo select {
+.campo input, .campo select, .campo textarea {
   padding: 12px 14px; border: 1.5px solid var(--line); border-radius: var(--radius);
   font-family: inherit; font-size: 15px; color: var(--ink); background: #fff;
   transition: border-color .15s; outline: none; width: 100%;
 }
-.campo input:focus, .campo select:focus { border-color: var(--ink); }
+.campo input:focus, .campo select:focus, .campo textarea:focus { border-color: var(--ink); }
+.campo textarea { resize: vertical; min-height: 96px; font-family: inherit; }
 .form-error {
   color: #c0392b; font-size: 13px; font-weight: 600; padding: 10px 14px;
   background: #fef0ef; border-radius: 8px; border: 1px solid #f5c6c0;

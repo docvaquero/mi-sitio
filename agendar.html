@@ -165,6 +165,14 @@
               <label for="pais-otro">¿Cuál es tu país?</label>
               <input type="text" id="pais-otro" name="pais_otro" placeholder="Escribí tu país" autocomplete="country-name" maxlength="80">
             </div>
+            <div class="campo">
+              <label for="telefono">Teléfono (con código de país)</label>
+              <input type="tel" id="telefono" name="telefono" placeholder="Ej: +54 9 11 1234-5678" required autocomplete="tel" maxlength="30">
+            </div>
+            <div class="campo">
+              <label for="motivo">Motivo de consulta</label>
+              <textarea id="motivo" name="motivo" placeholder="Contame brevemente qué te trae a la consulta..." required rows="4" maxlength="500"></textarea>
+            </div>
             <p id="form-error" class="form-error" aria-live="polite" style="display:none"></p>
             <button type="submit" class="btn btn-primary btn-full" id="btn-continuar">
               Continuar al pago →

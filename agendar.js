@@ -95,8 +95,10 @@
     const paisSelect = selectPais.value;
     const paisOtro = inputPaisOtro.value.trim();
     const pais = paisSelect === 'Otro' ? (paisOtro || 'Otro') : paisSelect;
+    const telefono = document.getElementById('telefono').value.trim();
+    const motivo = document.getElementById('motivo').value.trim();
 
-    if (!nombre || !email || !pais) {
+    if (!nombre || !email || !pais || !telefono || !motivo) {
       showFormError('Por favor completá todos los campos.');
       return;
     }
@@ -117,6 +119,8 @@
           nombre,
           email,
           pais,
+          telefono,
+          motivo,
           slotStart: state.selectedSlot.start,
           slotEnd: state.selectedSlot.end,
         }),

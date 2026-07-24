@@ -18,7 +18,7 @@ exports.handler = async (event) => {
   let booking;
   try {
     const raw = JSON.parse(Buffer.from(decodeURIComponent(data), 'base64').toString('utf8'));
-    booking = { nombre: raw.n, email: raw.e, pais: raw.p, slotStart: raw.s, slotEnd: raw.t };
+    booking = { nombre: raw.n, email: raw.e, pais: raw.p, slotStart: raw.s, slotEnd: raw.t, telefono: raw.f, motivo: raw.m };
   } catch {
     console.error('[paypal-capture] No se pudo decodificar booking data');
     return redirect(`${SITE_URL}/agendar.html?estado=error`);

@@ -41,6 +41,8 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
         description: [
           `Email: ${booking.email}`,
           `País: ${booking.pais}`,
+          `Teléfono: ${booking.telefono || '(no informado)'}`,
+          `Motivo: ${booking.motivo || '(no informado)'}`,
           `Pago: ${paymentMethod} (${paymentId})`,
         ].join('\n'),
         start: { dateTime: booking.slotStart, timeZone: TIMEZONE },
@@ -51,7 +53,7 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
         ],
         conferenceData: {
           createRequest: {
-            requestId: `dv-${bookingId}`,
+            requestId: `dv-${paymentId.toString().slice(0, 20)}`,
             conferenceSolutionKey: { type: 'hangoutsMeet' },
           },
         },
@@ -123,6 +125,7 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
       <tr><td style="padding:4px 0;color:#6f7076;white-space:nowrap;padding-right:16px">Duración</td><td style="padding:4px 0">${SLOT_DURATION_MIN} minutos</td></tr>
       <tr><td style="padding:4px 0;color:#6f7076;white-space:nowrap;padding-right:16px">Modalidad</td><td style="padding:4px 0">Google Meet (online)</td></tr>
       ${meetRow}
+      ${booking.motivo ? `<tr><td style="padding:4px 0;color:#6f7076;white-space:nowrap;padding-right:16px">Motivo</td><td style="padding:4px 0">${booking.motivo}</td></tr>` : ''}
     </table>
     ${meetLink ? '' : '<p style="margin:20px 0 0;color:#6f7076;font-size:14px">El link de Google Meet te va a llegar por la invitación de calendario en las próximas horas.</p>'}
     <p style="margin:24px 0 0;font-size:14px;color:#6f7076">¿Alguna duda? Respondé este email o escribime por WhatsApp.</p>
@@ -152,11 +155,13 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
       <tr><td style="padding:4px 0;color:#6f7076;padding-right:16px">Paciente</td><td style="padding:4px 0"><strong>${booking.nombre}</strong></td></tr>
       <tr><td style="padding:4px 0;color:#6f7076;padding-right:16px">Email</td><td style="padding:4px 0">${booking.email}</td></tr>
       <tr><td style="padding:4px 0;color:#6f7076;padding-right:16px">País</td><td style="padding:4px 0">${booking.pais}</td></tr>
+      <tr><td style="padding:4px 0;color:#6f7076;padding-right:16px">Teléfono</td><td style="padding:4px 0">${booking.telefono || '—'}</td></tr>
       <tr><td style="padding:4px 0;color:#6f7076;padding-right:16px">Fecha</td><td style="padding:4px 0">${dateStr}</td></tr>
       <tr><td style="padding:4px 0;color:#6f7076;padding-right:16px">Hora</td><td style="padding:4px 0"><strong>${timeStr} hs</strong></td></tr>
       <tr><td style="padding:4px 0;color:#6f7076;padding-right:16px">Pago</td><td style="padding:4px 0">${paymentMethod} · ${paymentId}</td></tr>
       ${meetLink ? `<tr><td style="padding:4px 0;color:#6f7076;padding-right:16px">Meet</td><td style="padding:4px 0"><a href="${meetLink}">${meetLink}</a></td></tr>` : ''}
       ${eventHtmlLink ? `<tr><td style="padding:4px 0;color:#6f7076;padding-right:16px">Calendario</td><td style="padding:4px 0"><a href="${eventHtmlLink}">Ver en Google Calendar</a></td></tr>` : ''}
+      ${booking.motivo ? `<tr><td style="padding:4px 0;color:#6f7076;padding-right:16px;vertical-align:top">Motivo</td><td style="padding:4px 0">${booking.motivo}</td></tr>` : ''}
     </table>
   </div>
 </div>

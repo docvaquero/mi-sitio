@@ -26,9 +26,9 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'JSON inválido' }) };
   }
 
-  const { nombre, email, pais, slotStart, slotEnd } = body;
+  const { nombre, email, pais, telefono, motivo, slotStart, slotEnd } = body;
 
-  if (!nombre || !email || !pais || !slotStart || !slotEnd) {
+  if (!nombre || !email || !pais || !telefono || !motivo || !slotStart || !slotEnd) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Faltan datos requeridos' }) };
   }
 
@@ -44,17 +44,22 @@ exports.handler = async (event) => {
 
   // ── Preparar datos de reserva (se pasan en los metadatos del pago, sin Blobs) ──
   const bookingId = crypto.randomUUID();
-  // Payload compacto para external_reference (límite 256 chars de MP)
+  // Payload compacto para external_reference (límite ~256 chars de MP)
+  // Nota: los strings se truncan para respetar el límite; motivo completo va en PayPal.
   const bookingPayload = {
     id: bookingId.slice(0, 8),
-    n: nombre.trim().slice(0, 50),
-    e: email.trim().toLowerCase().slice(0, 80),
-    p: pais.trim().slice(0, 20),
+    n: nombre.trim().slice(0, 25),
+    e: email.trim().toLowerCase().slice(0, 50),
+    p: pais.trim().slice(0, 10),
     s: slotStart,
     t: slotEnd,
+    f: telefono.trim().slice(0, 18),
+    m: motivo.trim().slice(0, 35),
   };
   const externalRef = JSON.stringify(bookingPayload);
-  const dataB64 = Buffer.from(externalRef).toString('base64');
+  // Para PayPal usamos el motivo completo (sin límite en el parámetro URL)
+  const bookingPayloadFull = { ...bookingPayload, m: motivo.trim().slice(0, 500) };
+  const dataB64 = Buffer.from(JSON.stringify(bookingPayloadFull)).toString('base64');
 
   // ── Crear preferencia de Mercado Pago ────────────────────────────────────────
   let mpUrl = null;
