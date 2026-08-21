@@ -26,6 +26,7 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
 
   try {
     const serviceAccountKey = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+    console.log('[confirmBooking] Service account email:', serviceAccountKey.client_email);
     const auth = new google.auth.GoogleAuth({
       credentials: serviceAccountKey,
       scopes: ['https://www.googleapis.com/auth/calendar'],
@@ -74,6 +75,9 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
     eventHtmlLink = eventRes.data.htmlLink ?? '';
   } catch (err) {
     console.error('[confirmBooking] Error al crear evento en Google Calendar:', err.message);
+    if (err.response?.data) {
+      console.error('[confirmBooking] Detalle del error:', JSON.stringify(err.response.data));
+    }
     // No lanzamos: el pago ya está confirmado, solo el calendario falló
   }
 
