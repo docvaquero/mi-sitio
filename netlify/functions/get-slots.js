@@ -45,17 +45,25 @@ exports.handler = async (event) => {
     });
     const calendar = google.calendar({ version: 'v3', auth });
 
-    // freebusy no funciona confiablemente con Gmail personal via service account.
-    // events.list sí funciona porque la service account tiene acceso de editor.
-    const eventsRes = await calendar.events.list({
-      calendarId: process.env.GOOGLE_CALENDAR_ID,
-      timeMin,
-      timeMax,
-      singleEvents: true,
-      orderBy: 'startTime',
-    });
+    // Consultar ambos calendarios en paralelo
+    const calendarIds = [
+      process.env.GOOGLE_CALENDAR_ID,
+      'fedevaquero88@gmail.com',
+    ];
+    const results = await Promise.all(
+      calendarIds.map((id) =>
+        calendar.events.list({
+          calendarId: id,
+          timeMin,
+          timeMax,
+          singleEvents: true,
+          orderBy: 'startTime',
+        })
+      )
+    );
 
-    busyPeriods = (eventsRes.data.items ?? [])
+    busyPeriods = results
+      .flatMap((res) => res.data.items ?? [])
       .filter((e) => e.status !== 'cancelled')
       .map((e) => ({
         start: e.start.dateTime ?? `${e.start.date}T00:00:00${TZ_OFFSET}`,

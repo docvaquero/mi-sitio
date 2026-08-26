@@ -6,6 +6,7 @@ const { Resend } = require('resend');
 
 const TIMEZONE = 'America/Argentina/Buenos_Aires';
 const DOCTOR_EMAIL = 'doc.federicovaquero@gmail.com';
+const DOCTOR_EMAIL_2 = 'fedevaquero88@gmail.com';
 const SLOT_DURATION_MIN = 50;
 
 /**
@@ -33,10 +34,7 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
     });
     const calendar = google.calendar({ version: 'v3', auth });
 
-    const eventRes = await calendar.events.insert({
-      calendarId: process.env.GOOGLE_CALENDAR_ID,
-      sendUpdates: 'all',
-      requestBody: {
+    const sharedEventBody = {
         summary: `Consulta — ${booking.nombre}`,
         description: [
           `Email: ${booking.email}`,
@@ -52,6 +50,7 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
         attendees: [
           { email: booking.email, displayName: booking.nombre },
           { email: DOCTOR_EMAIL, displayName: 'Doc Vaquero' },
+          { email: DOCTOR_EMAIL_2, displayName: 'Doc Vaquero' },
         ],
         reminders: {
           useDefault: false,
@@ -60,8 +59,21 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
             { method: 'popup', minutes: 30 },
           ],
         },
-      },
-    });
+      };
+
+    // Crear el evento en ambos calendarios en paralelo
+    const [eventRes] = await Promise.all([
+      calendar.events.insert({
+        calendarId: process.env.GOOGLE_CALENDAR_ID,
+        sendUpdates: 'all',
+        requestBody: sharedEventBody,
+      }),
+      calendar.events.insert({
+        calendarId: DOCTOR_EMAIL_2,
+        sendUpdates: 'none', // el paciente ya recibe invite desde el primer calendar
+        requestBody: sharedEventBody,
+      }),
+    ]);
 
     meetLink =
       eventRes.data.conferenceData?.entryPoints?.find(
