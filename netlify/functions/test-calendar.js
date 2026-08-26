@@ -20,18 +20,11 @@ exports.handler = async () => {
 
     const eventRes = await calendar.events.insert({
       calendarId: process.env.GOOGLE_CALENDAR_ID,
-      conferenceDataVersion: 1,
       requestBody: {
         summary: 'TEST DIAGNÓSTICO — podés borrar este evento',
         description: 'Evento creado automáticamente para verificar la integración.',
         start: { dateTime: start.toISOString(), timeZone: 'America/Argentina/Buenos_Aires' },
         end:   { dateTime: end.toISOString(),   timeZone: 'America/Argentina/Buenos_Aires' },
-        conferenceData: {
-          createRequest: {
-            requestId: `diag-${Date.now()}`,
-            conferenceSolutionKey: { type: 'hangoutsMeet' },
-          },
-        },
       },
     });
 

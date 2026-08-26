@@ -45,17 +45,22 @@ exports.handler = async (event) => {
     });
     const calendar = google.calendar({ version: 'v3', auth });
 
-    const freebusyRes = await calendar.freebusy.query({
-      requestBody: {
-        timeMin,
-        timeMax,
-        timeZone: TIMEZONE,
-        items: [{ id: process.env.GOOGLE_CALENDAR_ID }],
-      },
+    // freebusy no funciona confiablemente con Gmail personal via service account.
+    // events.list sí funciona porque la service account tiene acceso de editor.
+    const eventsRes = await calendar.events.list({
+      calendarId: process.env.GOOGLE_CALENDAR_ID,
+      timeMin,
+      timeMax,
+      singleEvents: true,
+      orderBy: 'startTime',
     });
 
-    busyPeriods =
-      freebusyRes.data.calendars?.[process.env.GOOGLE_CALENDAR_ID]?.busy ?? [];
+    busyPeriods = (eventsRes.data.items ?? [])
+      .filter((e) => e.status !== 'cancelled')
+      .map((e) => ({
+        start: e.start.dateTime ?? `${e.start.date}T00:00:00${TZ_OFFSET}`,
+        end:   e.end.dateTime   ?? `${e.end.date}T23:59:59${TZ_OFFSET}`,
+      }));
   } catch (err) {
     console.error('[get-slots] Error Google Calendar:', err.message);
     return {

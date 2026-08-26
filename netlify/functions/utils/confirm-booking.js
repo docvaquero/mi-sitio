@@ -35,7 +35,6 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
 
     const eventRes = await calendar.events.insert({
       calendarId: process.env.GOOGLE_CALENDAR_ID,
-      conferenceDataVersion: 1,
       sendUpdates: 'all',
       requestBody: {
         summary: `Consulta — ${booking.nombre}`,
@@ -45,6 +44,8 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
           `Teléfono: ${booking.telefono || '(no informado)'}`,
           `Motivo: ${booking.motivo || '(no informado)'}`,
           `Pago: ${paymentMethod} (${paymentId})`,
+          ``,
+          `⚠️ Acordate de agregar el link de Google Meet antes de la consulta.`,
         ].join('\n'),
         start: { dateTime: booking.slotStart, timeZone: TIMEZONE },
         end: { dateTime: booking.slotEnd, timeZone: TIMEZONE },
@@ -52,12 +53,6 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
           { email: booking.email, displayName: booking.nombre },
           { email: DOCTOR_EMAIL, displayName: 'Doc Vaquero' },
         ],
-        conferenceData: {
-          createRequest: {
-            requestId: `dv-${paymentId.toString().slice(0, 20)}`,
-            conferenceSolutionKey: { type: 'hangoutsMeet' },
-          },
-        },
         reminders: {
           useDefault: false,
           overrides: [
@@ -131,7 +126,7 @@ async function confirmBooking(booking, paymentMethod, paymentId) {
       ${meetRow}
       ${booking.motivo ? `<tr><td style="padding:4px 0;color:#6f7076;white-space:nowrap;padding-right:16px">Motivo</td><td style="padding:4px 0">${booking.motivo}</td></tr>` : ''}
     </table>
-    ${meetLink ? '' : '<p style="margin:20px 0 0;color:#6f7076;font-size:14px">El link de Google Meet te va a llegar por la invitación de calendario en las próximas horas.</p>'}
+    <p style="margin:20px 0 0;color:#6f7076;font-size:14px">El link de Google Meet te lo enviamos por separado antes de la consulta.</p>
     <p style="margin:24px 0 0;font-size:14px;color:#6f7076">¿Alguna duda? Respondé este email o escribime por WhatsApp.</p>
     <p style="margin:16px 0 0">Doc Vaquero</p>
   </div>
