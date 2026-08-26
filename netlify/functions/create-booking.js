@@ -44,8 +44,7 @@ exports.handler = async (event) => {
 
   // ── Preparar datos de reserva (se pasan en los metadatos del pago, sin Blobs) ──
   const bookingId = crypto.randomUUID();
-  // Payload compacto para external_reference (límite ~256 chars de MP)
-  // Nota: los strings se truncan para respetar el límite; motivo completo va en PayPal.
+  // external_reference: solo campos cortos (límite ~256 chars de MP, sin motivo)
   const bookingPayload = {
     id: bookingId.slice(0, 8),
     n: nombre.trim().slice(0, 25),
@@ -54,11 +53,10 @@ exports.handler = async (event) => {
     s: slotStart,
     t: slotEnd,
     f: telefono.trim().slice(0, 18),
-    m: motivo.trim().slice(0, 35),
   };
   const externalRef = JSON.stringify(bookingPayload);
-  // Para PayPal usamos el motivo completo (sin límite en el parámetro URL)
-  const bookingPayloadFull = { ...bookingPayload, m: motivo.trim().slice(0, 500) };
+  // Para PayPal: motivo completo en el param base64 (sin límite)
+  const bookingPayloadFull = { ...bookingPayload, m: motivo.trim() };
   const dataB64 = Buffer.from(JSON.stringify(bookingPayloadFull)).toString('base64');
 
   // ── Crear preferencia de Mercado Pago ────────────────────────────────────────
@@ -81,6 +79,7 @@ exports.handler = async (event) => {
         ],
         payer: { email: email.trim().toLowerCase() },
         external_reference: externalRef,
+        metadata: { motivo: motivo.trim() }, // motivo completo fuera del límite de external_reference
         back_urls: {
           success: `${SITE_URL}/agendar.html?estado=ok`,
           failure: `${SITE_URL}/agendar.html?estado=error`,

@@ -53,11 +53,24 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: `payment status: ${payment.status}` };
   }
 
-  // Decodificar datos de reserva desde external_reference (JSON compacto)
+  // Decodificar datos de reserva desde external_reference + motivo desde la preferencia
   let booking;
   try {
     const raw = JSON.parse(payment.external_reference);
-    booking = { nombre: raw.n, email: raw.e, pais: raw.p, slotStart: raw.s, slotEnd: raw.t, telefono: raw.f, motivo: raw.m };
+    // El motivo completo vive en metadata de la preferencia de MP
+    let motivo = '';
+    try {
+      const prefRes = await fetch(`https://api.mercadopago.com/checkout/preferences/${payment.preference_id}`, {
+        headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}` },
+      });
+      if (prefRes.ok) {
+        const pref = await prefRes.json();
+        motivo = pref.metadata?.motivo || '';
+      }
+    } catch (err) {
+      console.error('[mp-webhook] No se pudo obtener motivo de preferencia:', err.message);
+    }
+    booking = { nombre: raw.n, email: raw.e, pais: raw.p, slotStart: raw.s, slotEnd: raw.t, telefono: raw.f, motivo };
   } catch {
     console.error('[mp-webhook] external_reference no es JSON válido:', payment.external_reference);
     return { statusCode: 200, body: 'invalid external_reference' };
