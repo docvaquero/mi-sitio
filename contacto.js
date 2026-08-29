@@ -1,19 +1,14 @@
-// Envío robusto a Formspree: fetch + fallback nativo si algo falla
 (function () {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
-  const btn   = document.getElementById('sendBtn');
   const okEl  = document.getElementById('formOk');
   const errEl = document.getElementById('formErr');
-  const endpoint = form.getAttribute('action');
 
   const show = el => el && el.removeAttribute('hidden');
   const hide = el => el && el.setAttribute('hidden', '');
 
-  form.addEventListener('submit', async (e) => {
-    if (!window.fetch || !window.FormData) return;
-
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const hp = form.querySelector('input[name="_gotcha"]');
@@ -27,38 +22,21 @@
     }
 
     hide(okEl); hide(errEl);
-    if (btn) btn.disabled = true;
 
-    try {
-      const data = new FormData(form);
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' },
-        mode: 'cors',
-        redirect: 'follow'
-      });
+    const nombre   = form.querySelector('#nombre').value.trim();
+    const email    = form.querySelector('#email').value.trim();
+    const telefono = form.querySelector('#telefono').value.trim() || '—';
+    const pais     = form.querySelector('#pais').value.trim()     || '—';
+    const mensaje  = form.querySelector('#mensaje').value.trim();
 
-      let payload = null;
-      try { payload = await res.json(); } catch (_) {}
+    const subject = encodeURIComponent('Nuevo mensaje — Contacto Web Doc Vaquero');
+    const body    = encodeURIComponent(
+      `Nombre: ${nombre}\nEmail: ${email}\nTeléfono: ${telefono}\nPaís: ${pais}\n\nMensaje:\n${mensaje}`
+    );
 
-      if (res.ok) {
-        form.reset();
-        show(okEl);
-        return;
-      }
+    window.location.href = `mailto:doc.federicovaquero@gmail.com?subject=${subject}&body=${body}`;
 
-      console.warn('Formspree error:', res.status, payload);
-      show(errEl);
-      errEl.textContent = 'No se pudo enviar. Reintentando…';
-      setTimeout(() => form.submit(), 0);
-    } catch (err) {
-      console.error('Fallo de red:', err);
-      show(errEl);
-      errEl.textContent = 'Problema de conexión. Reintentando…';
-      setTimeout(() => form.submit(), 0);
-    } finally {
-      if (btn) btn.disabled = false;
-    }
+    form.reset();
+    show(okEl);
   }, false);
 })();
