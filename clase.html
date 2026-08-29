@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Clase en vivo — Introducción a las 5 Leyes Biológicas · Doc Vaquero</title>
-  <meta name="description" content="Clase online en vivo el sábado 6 de junio. Aprendé el modelo completo de las 5 Leyes Biológicas: por qué el cuerpo hace lo que hace, y cómo leer tus síntomas con otra mirada.">
+  <meta name="description" content="Clase online en vivo el sábado 10 de octubre. Aprendé el modelo completo de las 5 Leyes Biológicas: por qué el cuerpo hace lo que hace, y cómo leer tus síntomas con otra mirada.">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="clase.css" />
@@ -58,18 +58,11 @@
   <section class="hero hero-photo">
     <div class="wrap hero-inner">
       <div class="text">
-        <p class="eyebrow" style="color:rgba(255,255,255,.75)">CLASE ONLINE EN VIVO · SÁBADO 6 DE JUNIO · 90 MIN</p>
+        <p class="eyebrow" style="color:rgba(255,255,255,.75)">CLASE ONLINE EN VIVO · SÁBADO 10 DE OCTUBRE · 90 MIN</p>
         <h1>Introducción a las<br>5 Leyes Biológicas</h1>
         <p class="lead">Un modelo que cambia cómo entendés el cuerpo, la salud y la enfermedad. Para siempre.</p>
 
-        <div class="hero-promo js-promo">
-          <p class="hero-promo-label">⏰ Precio de lanzamiento · Hasta el 3 de junio</p>
-          <div class="hero-promo-prices">
-            <span class="hero-promo-price">ARS 35.000 &nbsp;·&nbsp; USD 50</span>
-            <span class="hero-promo-after">A partir del 3/6: ARS 35.000 / USD 60</span>
-          </div>
-          <p class="hero-promo-cupos">🔴 Quedan 3 lugares</p>
-        </div>
+        <p class="lead" style="font-size:1.05rem;color:rgba(255,255,255,.85);margin-top:8px">ARS 65.000 &nbsp;·&nbsp; USD 55</p>
 
         <div class="actions">
           <a class="btn btn-primary" href="#inscripcion">Inscribirme →</a>
@@ -82,6 +75,41 @@
   </section>
 
   <main>
+
+    <!-- ESTADOS de retorno del pago -->
+    <section id="estado-ok" class="section" style="display:none">
+      <div class="wrap wrap-narrow" style="text-align:center;padding:64px 24px">
+        <div style="font-size:48px">✅</div>
+        <h2 style="margin-top:16px">¡Tu inscripción está confirmada!</h2>
+        <p class="lead">Te enviamos un email de confirmación con todos los detalles.</p>
+        <p style="color:#6f7076;font-size:14px">Revisá también tu carpeta de spam si no lo recibís en los próximos minutos.</p>
+        <a href="index.html" class="btn btn-primary" style="margin-top:24px">Volver al inicio</a>
+      </div>
+    </section>
+    <section id="estado-error" class="section" style="display:none">
+      <div class="wrap wrap-narrow" style="text-align:center;padding:64px 24px">
+        <div style="font-size:48px">❌</div>
+        <h2 style="margin-top:16px">Hubo un problema con el pago</h2>
+        <p class="lead">No se realizó ningún cobro. Podés intentar de nuevo.</p>
+        <a href="clase.html" class="btn btn-primary" style="margin-top:24px">Intentar de nuevo</a>
+      </div>
+    </section>
+    <section id="estado-pendiente" class="section" style="display:none">
+      <div class="wrap wrap-narrow" style="text-align:center;padding:64px 24px">
+        <div style="font-size:48px">⏳</div>
+        <h2 style="margin-top:16px">Pago en proceso</h2>
+        <p class="lead">Cuando se confirme te enviamos el email de confirmación automáticamente.</p>
+        <a href="index.html" class="btn btn-primary" style="margin-top:24px">Volver al inicio</a>
+      </div>
+    </section>
+    <section id="estado-cancelado" class="section" style="display:none">
+      <div class="wrap wrap-narrow" style="text-align:center;padding:64px 24px">
+        <div style="font-size:48px">↩️</div>
+        <h2 style="margin-top:16px">Cancelaste el pago</h2>
+        <p class="lead">No se realizó ningún cobro. Podés intentar de nuevo cuando quieras.</p>
+        <a href="clase.html" class="btn btn-primary" style="margin-top:24px">Intentar de nuevo</a>
+      </div>
+    </section>
 
     <!-- ───────────── QUÉ VAS A APRENDER ───────────── -->
     <section id="aprende" class="section reveal">
@@ -130,7 +158,7 @@
     <section id="horario" class="section alt reveal">
       <div class="wrap">
         <p class="eyebrow">CUÁNDO ES</p>
-        <h2>Sábado 6 de junio · Online · Google Meet</h2>
+        <h2>Sábado 10 de octubre · Online · Google Meet</h2>
         <p class="lead">Si no podés conectarte en vivo, la clase queda grabada y te la mandamos.</p>
 
         <div class="horario-grid">
@@ -185,9 +213,7 @@
         </div>
 
         <div class="incluye-precio">
-          <p class="precio-early-bird js-promo">PRECIO HASTA EL 3 DE JUNIO</p>
-          <p class="precio-tag"><span class="precio-label">Valor:</span> ARS 35.000 &nbsp;·&nbsp; USD 50</p>
-          <p class="precio-futuro js-promo">A partir del 3/6: ARS 35.000 &nbsp;·&nbsp; USD 60</p>
+          <p class="precio-tag"><span class="precio-label">Valor:</span> ARS 65.000 &nbsp;·&nbsp; USD 55</p>
           <a class="btn btn-primary" href="#inscripcion">Quiero inscribirme →</a>
         </div>
       </div>
@@ -213,7 +239,7 @@
         <ol class="pasos-lista">
           <li><strong>Completá el formulario</strong> y tocá el botón para ir a la pantalla de pago.</li>
           <li><strong>Hacé el pago</strong> — Mercado Pago (Argentina) o PayPal (exterior).</li>
-          <li><strong>Listo</strong> — te mandamos la confirmación y el link de Google Meet por mail.</li>
+          <li><strong>Listo</strong> — te mandamos la confirmación por mail.</li>
         </ol>
 
         <form id="form-inscripcion" class="inscripcion-form" novalidate>
@@ -239,34 +265,50 @@
             <label for="pais-otro">¿Cuál es tu país?</label>
             <input type="text" id="pais-otro" name="pais_otro" placeholder="Escribí tu país" autocomplete="country-name" maxlength="100">
           </div>
+          <div class="campo">
+            <label for="telefono">Teléfono / WhatsApp</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+54 9 11 1234-5678" required autocomplete="tel" maxlength="30">
+          </div>
+          <div class="campo">
+            <label for="codigo-promo">Código de descuento <span style="color:#6f7076;font-weight:400;font-size:.85em">(opcional)</span></label>
+            <input type="text" id="codigo-promo" name="codigo_promo" placeholder="Ingresá tu código" maxlength="30" autocomplete="off" style="text-transform:uppercase;letter-spacing:.05em">
+          </div>
           <button type="submit" class="btn btn-primary btn-full" id="btn-inscribirse">Continuar al pago →</button>
           <p id="form-msg" class="form-msg" aria-live="polite"></p>
         </form>
       </div>
     </section>
 
-    <!-- ───────────── PAGO (oculto hasta enviar el form) ───────────── -->
+    <!-- PAGO (oculto hasta enviar el form) -->
     <section id="pago" class="section" style="display:none">
       <div class="wrap wrap-narrow">
         <p class="eyebrow">ÚLTIMO PASO</p>
-        <h2>Elegí tu forma de pago</h2>
-        <p class="lead">Completá el pago con el método que prefieras. Apenas confirmemos el pago te enviamos el link de Google Meet y el material.</p>
+        <h2>Elegí cómo pagar</h2>
+        <p class="lead">Completá el pago con el método que prefieras. Te enviamos la confirmación por mail.</p>
 
-        <p class="cupos-aviso js-promo">🔴 Quedan 9 lugares disponibles</p>
-
-        <div class="pago-btns">
-          <a class="btn-pago-card btn-pago-mp" href="https://mpago.la/2QDyMMw" target="_blank" rel="noopener noreferrer">
-            <div class="logo-mp">mercado<span>pago</span></div>
-            <div class="pago-monto">ARS 35.000</div>
-            <div class="pago-region">Para Argentina</div>
-          </a>
-          <a class="btn-pago-card btn-pago-pp" href="https://www.paypal.com/ncp/payment/XNK7SHWM7YQ3N" target="_blank" rel="noopener noreferrer">
-            <div class="logo-pp"><b>Pay</b>Pal</div>
-            <div class="pago-monto">USD 50</div>
-            <div class="pago-region">Para el exterior</div>
-          </a>
+        <div id="pago-cargando" style="text-align:center;padding:24px 0;color:#6f7076">
+          Preparando opciones de pago…
         </div>
 
+        <div id="pago-opciones" style="display:none">
+          <p id="promo-aplicada" style="display:none;color:#27ae60;text-align:center;font-weight:600;margin-bottom:12px">✓ Código aplicado — 30% de descuento</p>
+          <div class="pago-btns">
+            <a id="btn-clase-mp" class="btn-pago-card btn-pago-mp" href="#" target="_blank" rel="noopener noreferrer">
+              <div class="logo-mp">mercado<span>pago</span></div>
+              <div class="pago-monto" id="monto-mp">ARS 65.000</div>
+              <div class="pago-region">Para Argentina</div>
+            </a>
+            <a id="btn-clase-pp" class="btn-pago-card btn-pago-pp" href="#" target="_blank" rel="noopener noreferrer">
+              <div class="logo-pp"><b>Pay</b>Pal</div>
+              <div class="pago-monto" id="monto-pp">USD 55</div>
+              <div class="pago-region">Para el exterior</div>
+            </a>
+          </div>
+        </div>
+
+        <p id="pago-error" style="display:none;color:#c0392b;text-align:center;margin-top:16px">
+          No se pudo generar el link de pago. Intentá de nuevo o escribinos.
+        </p>
       </div>
     </section>
 

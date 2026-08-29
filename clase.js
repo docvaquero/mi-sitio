@@ -106,28 +106,36 @@ document.addEventListener('click', (e) => {
   }
 })();
 
-/* ========================= 6) Google Apps Script — Formulario ========================= */
+/* ========================= Formulario — Pago dinámico ========================= */
 (() => {
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxIyz26pLUHMoIV_HneimuUOW1vmFUgmdTfV58t6ptHc3wGXZRmZlJpB8Bx4BlPcrU5/exec';
+  // Manejar estados de retorno del pago
+  const params = new URLSearchParams(window.location.search);
+  const estado = params.get('estado');
+  if (estado) {
+    ['aprende', 'horario', 'incluye', 'inscripcion', 'pago'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    document.querySelectorAll('section.reveal, .profesionales-nota').forEach(el => {
+      el.style.display = 'none';
+    });
+    const map = { ok: 'estado-ok', error: 'estado-error', pendiente: 'estado-pendiente', cancelado: 'estado-cancelado' };
+    const sec = document.getElementById(map[estado]);
+    if (sec) sec.style.display = '';
+    return;
+  }
 
-  // Tu número de WhatsApp con código de país, sin + ni espacios
-  // Ejemplo Argentina: 5491155554444  (54=AR, 9=móvil, los 8 dígitos del número)
-  // Dejalo vacío hasta que lo tengas: el botón igualmente va a abrir tu WhatsApp
-  const WA_NUMERO = '5491123099063';
-  const WA_LINK_FALLBACK = 'https://wa.link/kcppfm';
-
-  const form          = document.getElementById('form-inscripcion');
-  const pagoSec       = document.getElementById('pago');
-  const inscSec       = document.getElementById('inscripcion');
-  const btnEnviar     = document.getElementById('btn-inscribirse');
-  const msg           = document.getElementById('form-msg');
-  const selPais       = document.getElementById('pais');
+  const form        = document.getElementById('form-inscripcion');
+  const pagoSec     = document.getElementById('pago');
+  const inscSec     = document.getElementById('inscripcion');
+  const btnEnviar   = document.getElementById('btn-inscribirse');
+  const msg         = document.getElementById('form-msg');
+  const selPais     = document.getElementById('pais');
   const campoPaisOtro = document.getElementById('campo-pais-otro');
   const inputPaisOtro = document.getElementById('pais-otro');
 
   if (!form) return;
 
-  // Mostrar / ocultar campo "Otro país"
   if (selPais && campoPaisOtro) {
     selPais.addEventListener('change', () => {
       const esOtro = selPais.value === 'Otro';
@@ -136,50 +144,77 @@ document.addEventListener('click', (e) => {
     });
   }
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!form.checkValidity()) { form.reportValidity(); return; }
 
-    const nombre = form.nombre.value.trim();
-    const email  = form.email.value.trim();
-    const pais   = (selPais.value === 'Otro' && inputPaisOtro)
-                   ? inputPaisOtro.value.trim()
-                   : selPais.value;
+    const nombre      = form.nombre.value.trim();
+    const email       = form.email.value.trim().toLowerCase();
+    const telefono    = form.telefono.value.trim();
+    const paisSel     = selPais.value;
+    const paisOtro    = inputPaisOtro ? inputPaisOtro.value.trim() : '';
+    const pais        = paisSel === 'Otro' ? (paisOtro || 'Otro') : paisSel;
+    const codigoPromo = (document.getElementById('codigo-promo')?.value.trim().toUpperCase()) || '';
+
+    if (!nombre || !email || !pais || !telefono) {
+      if (msg) { msg.textContent = 'Por favor completá todos los campos.'; msg.style.color = '#c0392b'; }
+      return;
+    }
 
     btnEnviar.disabled    = true;
-    btnEnviar.textContent = 'Enviando…';
-    msg.textContent       = '';
+    btnEnviar.textContent = 'Procesando…';
+    if (msg) msg.textContent = '';
 
-    // Envío no-cors + URLSearchParams (evita preflight CORS de Google Apps Script)
-    fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode:   'no-cors',
-      body:   new URLSearchParams({ nombre, email, pais }),
-    }).catch(() => {});  // fire & forget — el servidor igual recibe el POST
+    try {
+      const res  = await fetch('/.netlify/functions/create-clase', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ nombre, email, pais, telefono, codigoPromo }),
+      });
+      const data = await res.json();
 
-    // Evento Meta Pixel
-    if (typeof fbq === 'function') fbq('track', 'Lead');
+      if (!res.ok) {
+        if (msg) { msg.textContent = data.error || 'Hubo un problema. Intentá de nuevo.'; msg.style.color = '#c0392b'; }
+        return;
+      }
 
-    // Construir link de WhatsApp con datos pre-cargados
-    const btnWs = document.getElementById('btn-ws-comprobante');
-    if (btnWs) {
-      const texto = `Hola! Te mando el comprobante para la clase del 6 de junio.\nNombre: ${nombre}\nEmail: ${email}`;
-      const url = WA_NUMERO
-        ? `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(texto)}`
-        : WA_LINK_FALLBACK;
-      btnWs.setAttribute('href', url);
+      const btnMp    = document.getElementById('btn-clase-mp');
+      const btnPp    = document.getElementById('btn-clase-pp');
+      const cargando = document.getElementById('pago-cargando');
+      const opciones = document.getElementById('pago-opciones');
+      const errPago  = document.getElementById('pago-error');
+
+      if (data.mpUrl    && btnMp) btnMp.href = data.mpUrl;
+      if (data.paypalUrl && btnPp) btnPp.href = data.paypalUrl;
+
+      if (data.promoAplicada) {
+        const el = document.getElementById('promo-aplicada');
+        if (el) el.style.display = '';
+      }
+      const montoMp = document.getElementById('monto-mp');
+      const montoPp = document.getElementById('monto-pp');
+      if (montoMp && data.precioARS) montoMp.textContent = `ARS ${data.precioARS.toLocaleString('es-AR')}`;
+      if (montoPp && data.precioUSD) montoPp.textContent = `USD ${data.precioUSD}`;
+
+      if (cargando) cargando.style.display = 'none';
+      if (data.mpUrl || data.paypalUrl) { if (opciones) opciones.style.display = ''; }
+      else { if (errPago) errPago.style.display = ''; }
+
+      if (typeof fbq === 'function') fbq('track', 'Lead');
+
+      if (inscSec) inscSec.style.display = 'none';
+      if (pagoSec) {
+        pagoSec.style.display = '';
+        pagoSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } catch (err) {
+      if (msg) { msg.textContent = 'Error de conexión. Intentá de nuevo.'; msg.style.color = '#c0392b'; }
+      console.error(err);
+    } finally {
+      btnEnviar.disabled    = false;
+      btnEnviar.textContent = 'Continuar al pago →';
     }
-
-    mostrarPago();
   });
-
-  function mostrarPago() {
-    if (inscSec)  inscSec.style.display  = 'none';
-    if (pagoSec) {
-      pagoSec.style.display = 'block';
-      pagoSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
 })();
 
 /* ============ Lazy-load videos ============ */

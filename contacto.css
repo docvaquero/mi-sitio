@@ -46,21 +46,21 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  background: #111;
+  background: var(--accent);
   color: #fff;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 12px 16px;
   font-weight: 700;
-  border: 1px solid #111;
-  box-shadow: 0 2px 6px rgba(0,0,0,.12);
-  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+  border: 1px solid var(--accent);
+  box-shadow: 0 3px 10px var(--accent-glow);
+  transition: transform .22s var(--ease), background .22s, box-shadow .22s;
   width: 100%;
 }
 .pill-icon:hover{
-  transform: translateY(-2px);
-  background: #222;
-  border-color: #222;
-  box-shadow: 0 5px 12px rgba(0,0,0,.18);
+  transform: translateY(-3px);
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  box-shadow: 0 8px 22px var(--accent-glow);
 }
 .pill-icon img{
   width: 18px; height: 18px;
@@ -114,6 +114,16 @@
   font: inherit;
 }
 .field textarea{ resize: vertical; }
+
+.field input[type="text"]:focus,
+.field input[type="email"]:focus,
+.field input[list]:focus,
+.field input[type="tel"]:focus,
+.field textarea:focus{
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
 
 .hp{ position:absolute; left:-9999px; opacity:0; }
 
